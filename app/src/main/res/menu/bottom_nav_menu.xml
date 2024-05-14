@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_mi_despensa"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_mi_despensa" />
+
+    <item
+        android:id="@+id/navigation_lista_de_compra"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_lista_de_compra" />
+
+    <item
+        android:id="@+id/navigation_notificaciones"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_notificaciones" />
+
+    <item
+        android:id="@+id/navigation_mi_cuenta"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_mi_cuenta" />
+</menu>

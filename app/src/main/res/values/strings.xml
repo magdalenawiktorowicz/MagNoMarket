@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name" translatable="false">MagNo Market</string>
+    <string name="title_mi_cuenta" translatable="false">Mi Cuenta</string>
+    <string name="title_lista_de_compra" translatable="false">Lista de Compra</string>
+    <string name="title_notificaciones" translatable="false">Notificaciones</string>
+    <string name="title_mi_despensa" translatable="false">Mi Despensa</string>
+    <string name="prompt_correo" translatable="false">Correo electrónico</string>
+    <string name="prompt_contrasena" translatable="false">Contraseña</string>
+    <string name="switchSaveCredentials" translatable="false">Guardar las credenciales</string>
+    <string name="btnAcceder" translatable="false">Acceder</string>
+
+    <string name="borrarCredenciales" translatable="false">Borrar las credenciales</string>
+    <string name="credencialesBorradas" translatable="false">Credenciales borradas</string>
+
+    <string name="ordenar">Ordenar:</string>
+
+    <string name="nuevoProducto">Nuevo Producto</string>
+    <string name="producto">Producto:</string>
+    <string name="nombreProductoPlaceholder">Nombre del producto...</string>
+    <string name="categoria">Categoría:</string>
+    <string name="sinCategoria">Sin categoría</string>
+    <string name="cantidad">Cantidad:</string>
+    <string name="unidad">Unidad:</string>
+    <string name="fechaCaducidad">Fecha de caducidad:</string>
+    <string name="fechaPlaceholder">22/06/2024</string>
+    <string name="anadirAutomaticamente">Añadir automáticamente a la lista de compra:</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+    <string name="cantidadMinima">Cantidad mínima:</string>
+    <string name="tiendaProcedente">Tienda procedente:</string>
+    <string name="nombreTiendaPlaceholder">Nombre de la tienda...</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="anadirALaListaCompra">Añadir a la lista de compra</string>
+    <string name="cancelar">Cancelar</string>
+
+</resources>

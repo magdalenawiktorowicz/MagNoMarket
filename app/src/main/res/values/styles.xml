@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="styles" parent="@style/Theme.AppCompat.Light">
+    </style>
+    <style name="HintText">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:colorActivatedHighlight">@color/cherry</item>
+    </style>
+    <style name="TextView">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:elegantTextHeight">true</item>
+        <item name="android:shadowColor">@color/grey</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CustomizedSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/cherry</item>
+        <item name="colorSwitchThumbNormal">@color/orange</item>
+        <item name="android:colorForeground">@color/grey</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="ToastStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

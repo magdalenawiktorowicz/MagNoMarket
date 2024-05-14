@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_mi_despensa">
+
+    <fragment
+        android:id="@+id/navigation_mi_despensa"
+        android:name="es.studium.magnomarket.ui.midespensa.MiDespensaFragment"
+        android:label="@string/title_mi_despensa"
+        tools:layout="@layout/fragment_mi_despensa" />
+
+    <fragment
+        android:id="@+id/navigation_lista_de_compra"
+        android:name="es.studium.magnomarket.ui.listadecompra.ListaDeCompraFragment"
+        android:label="@string/title_lista_de_compra"
+        tools:layout="@layout/fragment_lista_de_compra" />
+
+    <fragment
+        android:id="@+id/navigation_notificaciones"
+        android:name="es.studium.magnomarket.ui.notificaciones.NotificacionesFragment"
+        android:label="@string/title_notificaciones"
+        tools:layout="@layout/fragment_notificaciones" />
+
+    <fragment
+        android:id="@+id/navigation_mi_cuenta"
+        android:name="es.studium.magnomarket.ui.micuenta.MiCuentaFragment"
+        android:label="@string/title_mi_cuenta"
+        tools:layout="@layout/fragment_mi_cuenta" />
+
+</navigation>
