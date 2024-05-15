@@ -86,8 +86,8 @@ public class ProductoDespensa {
         return idUsuarioFK;
     }
 
-//    @Override
-//    public String toString() {
-//        return
-//    }
+    @Override
+    public String toString() {
+        return getNombreProductoDespensa();
+    }
 }

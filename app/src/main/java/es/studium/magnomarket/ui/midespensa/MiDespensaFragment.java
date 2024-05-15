@@ -50,8 +50,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         MiDespensaViewModel miDespensaViewModel =
                 new ViewModelProvider(this).get(MiDespensaViewModel.class);
 
-        //fm = getActivity().getSupportFragmentManager();
-
         binding = FragmentMiDespensaBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -131,12 +129,12 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         }
         else if (v.getId() == floatingButtonAdd.getId()) {
             Toast.makeText(getContext(), "ADD button", Toast.LENGTH_SHORT).show();
-//            fragmentNuevoProductoDespensa = new NuevoProductoDespensa();
-//            fm = getActivity().getSupportFragmentManager();
-//            ft = fm.beginTransaction();
-//            ft.replace(R.id.container, fragmentNuevoProductoDespensa, "nuevoProductoDespensa")
-//                    .addToBackStack(null)
-//                    .commit();
+            fragmentNuevoProductoDespensa = new NuevoProductoDespensa();
+            fm = getActivity().getSupportFragmentManager();
+            ft = fm.beginTransaction();
+            ft.replace(R.id.container, fragmentNuevoProductoDespensa, "nuevoProductoDespensa")
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

@@ -29,7 +29,7 @@ public class BDConexion {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://192.168.0.39/APIRestMagno/usuarios.php")
+                .url("http://192.168.1.131/APIRestMagno/usuarios.php")
                 .post(requestBody)
                 .build();
 
@@ -84,7 +84,7 @@ public class BDConexion {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://192.168.0.39/ApiRestMagno/productosdespensa.php?idUsuarioFK=" + idUsuario)
+                .url("http://192.168.1.131/ApiRestMagno/productosdespensa.php?idUsuarioFK=" + idUsuario)
                 .build();
 
 // Crear una llamada asíncrona
@@ -126,61 +126,5 @@ public class BDConexion {
         });
 
         return productosDespensa;
-
-
-//        ArrayList<ProductoDespensa> productosDespensa = new ArrayList<>();
-//        JSONArray result;
-//        int idProductoDespensa;
-//        String nombreProductoDespensa;
-//        String imagenProductoDespensa;
-//        LocalDate fechaCaducidadProductoDespensa;
-//        int cantidadProductoDespensa;
-//        String unidadProductoDespensa;
-//        int autoanadirAListaCompraDespensa;
-//        int cantidadMinParaAnadirDespensa;
-//        String tiendaProductoDespensa;
-//        int idCategoriaFK;
-//        int idUsuarioFK;
-//
-//
-//        // Crear una instancia de OkHttpClient
-//        OkHttpClient client = new OkHttpClient();
-//
-//        Request request = new Request.Builder()
-//                .url("http://192.168.0.39/ApiRestMagno/productosdespensa.php")
-//                .build();
-//
-//        try {
-//            // Realizar la solicitud
-//            Response response = client.newCall(request).execute();
-//            // Procesar la respuesta
-//            if (response.isSuccessful()) {
-//                result = new JSONArray(response.body().string());
-//                for (int i = 0; i < result.length(); i++) {
-//                    JSONObject jsonObject = result.getJSONObject(i);
-//                    idProductoDespensa = jsonObject.getInt("idProductoDespensa");
-//                    nombreProductoDespensa = jsonObject.getString("nombreProductoDespensa");
-//                    imagenProductoDespensa = jsonObject.getString("imagenProductoDespensa");
-//                    String[] fc = jsonObject.getString("fechaCaducidadProductoDespensa").split("-");
-//                    fechaCaducidadProductoDespensa = LocalDate.of(Integer.parseInt(fc[0]), Integer.parseInt(fc[1]), Integer.parseInt(fc[2]));
-//                    cantidadProductoDespensa = jsonObject.getInt("cantidadProductoDespensa");
-//                    unidadProductoDespensa = jsonObject.getString("unidadProductoDespensa");
-//                    autoanadirAListaCompraDespensa = jsonObject.getInt("autoanadirAListaCompraDespensa");
-//                    cantidadMinParaAnadirDespensa = jsonObject.getInt("cantidadMinParaAnadirDespensa");
-//                    tiendaProductoDespensa = jsonObject.getString("tiendaProductoDespensa");
-//                    idCategoriaFK = jsonObject.getInt("idCategoriaFK");
-//                    idUsuarioFK = jsonObject.getInt("idUsuarioFK");
-//
-//                    productosDespensa.add(new ProductoDespensa(idProductoDespensa, nombreProductoDespensa, imagenProductoDespensa, fechaCaducidadProductoDespensa, cantidadProductoDespensa, unidadProductoDespensa, autoanadirAListaCompraDespensa, cantidadMinParaAnadirDespensa, tiendaProductoDespensa, idCategoriaFK, idUsuarioFK));
-//                }
-//            } else {
-//                Log.e("MainActivity", response.message());
-//            }
-//        } catch (IOException e) {
-//            Log.e("MainActivity", e.getMessage());
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return productosDespensa;
     }
 }
