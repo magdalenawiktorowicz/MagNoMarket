@@ -40,7 +40,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     SharedPreferences sharedpreferences;
     String usuarioInput;
     String contrasenaInput;
-    public static int idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         // en el caso positivo, saltar el Login y mostrar directamente MainActivity
         if (!(isSharedUsuario.isEmpty()) && !(isSharedClave.isEmpty())) {
             Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("idUsuario", sharedpreferences.getInt("usuarioID", 0));
             startActivity(intent);
             finish(); // deshabilitar el botón back
         } else {
@@ -155,19 +155,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void performLogin(String usuario, String contrasena, int idUsuario) {
-        this.idUsuario = idUsuario;
+        MainActivity.idUsuario = idUsuario;
         // si el switch para guardar las credenciales está activado
         if (switchGuardarCredenciales.isChecked()) {
             // guardar las credenciales en sharedPreferences
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString(Usuario, usuario);
                 editor.putString(Clave, contrasena);
-                editor.putInt(UserID, idUsuario);
+                editor.putInt(UserID, MainActivity.idUsuario);
                 editor.commit();
             }
 
         // pasar a la ventana principal a través del Intent
         Intent intentMain = new Intent(this, MainActivity.class);
+        intentMain.putExtra("correoUsuario", usuarioInput);
+        intentMain.putExtra("contrasenaUsuario", contrasenaInput);
+        intentMain.putExtra("idUsuario", MainActivity.idUsuario);
         intentMain.putExtra("sharedPrefsClicked", switchGuardarCredenciales.isChecked());
         startActivity(intentMain);
         finish();

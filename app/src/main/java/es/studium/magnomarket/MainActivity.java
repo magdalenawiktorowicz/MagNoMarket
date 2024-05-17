@@ -15,6 +15,7 @@ import es.studium.magnomarket.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int idUsuario;
     private ActivityMainBinding binding;
 
     @Override

@@ -66,7 +66,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         List<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add(getResources().getString(R.string.spinnerPrompt));
         // añadir cada categoria al Spinner
-        Toast.makeText(getContext(), categorias.toString(), Toast.LENGTH_SHORT).show();
         for (Categoria c : categorias) {
             spinnerArray.add(c.toString());
         }
@@ -97,7 +96,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
+        if (v.getId() == nuevoProductoPhoto.getId()) {
+            Toast.makeText(getContext(), "CÁMERA", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

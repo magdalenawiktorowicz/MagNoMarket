@@ -1,5 +1,11 @@
 package es.studium.magnomarket.ui.midespensa;
 
+import static es.studium.magnomarket.Login.LoginCredenciales;
+
+import android.content.Context;
+import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +33,7 @@ import java.util.List;
 
 import es.studium.magnomarket.BDConexion;
 import es.studium.magnomarket.Login;
+import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
 import es.studium.magnomarket.databinding.FragmentMiDespensaBinding;
@@ -40,10 +48,20 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     Spinner spinnerOrdenar;
     ImageButton buttonVistaLista, buttonVistaCategorias;
     FloatingActionButton floatingButtonAdd;
-
+    SharedPreferences sharedpreferences;
     FragmentManager fm;
     FragmentTransaction ft;
     Fragment fragmentNuevoProductoDespensa;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedpreferences = getActivity().getSharedPreferences(LoginCredenciales, Context.MODE_PRIVATE);
+        if (sharedpreferences != null) {
+            MainActivity.idUsuario = sharedpreferences.getInt("usuarioID", 0);
+        }
+
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +72,8 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         View root = binding.getRoot();
 
         listView = root.findViewById(R.id.listView);
-        productoDespensas = BDConexion.consultarProductosDespensa(Login.idUsuario);
+        Toast.makeText(getContext(), MainActivity.idUsuario + "", Toast.LENGTH_SHORT).show();
+        productoDespensas = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
 
         // asignar un listener a cada elemento de la lista
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,7 +147,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
             buttonVistaCategorias.setEnabled(false);
         }
         else if (v.getId() == floatingButtonAdd.getId()) {
-            Toast.makeText(getContext(), "ADD button", Toast.LENGTH_SHORT).show();
             fragmentNuevoProductoDespensa = new NuevoProductoDespensa();
             fm = getActivity().getSupportFragmentManager();
             ft = fm.beginTransaction();
