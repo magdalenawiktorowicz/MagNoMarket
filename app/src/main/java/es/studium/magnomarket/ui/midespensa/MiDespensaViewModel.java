@@ -10,7 +10,6 @@ public class MiDespensaViewModel extends ViewModel {
 
     public MiDespensaViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is mi despensa fragment");
     }
 
     public LiveData<String> getText() {

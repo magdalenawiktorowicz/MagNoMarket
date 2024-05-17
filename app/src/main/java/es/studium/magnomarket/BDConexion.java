@@ -127,4 +127,47 @@ public class BDConexion {
 
         return productosDespensa;
     }
+
+    // consulta categorías
+    public static ArrayList<Categoria> consultarCategorias() {
+
+        ArrayList<Categoria> categorias = new ArrayList<>();
+
+    // Crear una instancia de OkHttpClient
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://192.168.1.131/ApiRestMagno/categorias.php")
+                .build();
+
+// Crear una llamada asíncrona
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONArray result = new JSONArray(response.body().string());
+                        for (int i = 0; i < result.length(); i++) {
+                            JSONObject jsonObject = result.getJSONObject(i);
+                            int idCategoria = jsonObject.getInt("idCategoria");
+                            String nombreCategoria = jsonObject.getString("nombreCategoria");
+
+                            categorias.add(new Categoria(idCategoria, nombreCategoria));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e("MainActivity", response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("MainActivity", e.getMessage());
+            }
+        });
+
+        return categorias;
+    }
 }

@@ -21,6 +21,13 @@
     <string name="sinCategoria">Sin categoría</string>
     <string name="cantidad">Cantidad:</string>
     <string name="unidad">Unidad:</string>
+    <string-array name="unidades">
+        <item name="unidad">unidad</item>
+        <item name="">kg</item>
+        <item name="">g</item>
+        <item name="">L</item>
+        <item name="">ml</item>
+    </string-array>
     <string name="fechaCaducidad">Fecha de caducidad:</string>
     <string name="fechaPlaceholder">22/06/2024</string>
     <string name="anadirAutomaticamente">Añadir automáticamente a la lista de compra:</string>
@@ -32,5 +39,6 @@
     <string name="aceptar">Aceptar</string>
     <string name="anadirALaListaCompra">Añadir a la lista de compra</string>
     <string name="cancelar">Cancelar</string>
+    <string name="spinnerPrompt">Sin categoría</string>
 
 </resources>

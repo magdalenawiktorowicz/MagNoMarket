@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -46,12 +47,13 @@ public class AdapterListItem extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(this.contexto);
         v = layoutInflater.inflate(R.layout.list_item, null);
 
-        // obtener el valor actual según la posición
-        String currentName = String.valueOf(items.get(position));
+        ProductoDespensa currentItem = items.get(position);
 
-        // referenciar el elemento a modificar y rellenarlo
         TextView textView = v.findViewById(R.id.textView);
-        textView.setText(currentName);
+        textView.setText(currentItem.getNombreProductoDespensa());
+
+        ImageView productPhoto = v.findViewById(R.id.imageView);
+        // to be continued...
 
         return v;
     }

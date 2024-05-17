@@ -54,7 +54,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         View root = binding.getRoot();
 
         listView = root.findViewById(R.id.listView);
-        Log.i("DESPENSA", "WORKED");
         productoDespensas = BDConexion.consultarProductosDespensa(Login.idUsuario);
 
         // asignar un listener a cada elemento de la lista
@@ -70,6 +69,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
 
         // Asignar el adaptador a nuestro ListView
         listView.setAdapter(adaptador);
+
 
         List<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("alfabéticamente");
