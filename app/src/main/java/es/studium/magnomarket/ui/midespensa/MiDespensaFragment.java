@@ -3,12 +3,10 @@ package es.studium.magnomarket.ui.midespensa;
 import static es.studium.magnomarket.Login.LoginCredenciales;
 
 import android.content.Context;
-import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.studium.magnomarket.BDConexion;
-import es.studium.magnomarket.Login;
 import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
@@ -57,8 +54,10 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedpreferences = getActivity().getSharedPreferences(LoginCredenciales, Context.MODE_PRIVATE);
+        // si las preferencias compartidas existen
         if (sharedpreferences != null) {
-            MainActivity.idUsuario = sharedpreferences.getInt("usuarioID", 0);
+            // obtener el valor de idUsuario, si no - por defecto el valor de la variable estática idUsuario
+            MainActivity.idUsuario = sharedpreferences.getInt("usuarioID", MainActivity.idUsuario);
         }
 
     }

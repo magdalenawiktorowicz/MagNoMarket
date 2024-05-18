@@ -1,21 +1,43 @@
 package es.studium.magnomarket.ui.midespensa;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.Manifest;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +60,12 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     ImageButton imageButtonCantidadMinMinus, imageButtonCantidadMinPlus;
     EditText editTextCantidadMin;
     EditText editTextTiendaProcedente;
+    private Uri imageUri = null;
+
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private static final int STORAGE_REQUEST_CODE = 101;
+    private String[] cameraPermissions;
+    private String[] storagePermissions;
 
     public NuevoProductoDespensa() {
         // Required empty public constructor
@@ -48,6 +76,8 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         categorias = BDConexion.consultarCategorias();
+        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     }
 
     @Override
@@ -97,8 +127,116 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == nuevoProductoPhoto.getId()) {
-            Toast.makeText(getContext(), "CÁMERA", Toast.LENGTH_SHORT).show();
+            showInputImageDialog();
         }
+    }
+
+    private void showInputImageDialog() {
+        PopupMenu popupMenu = new PopupMenu(getContext(), nuevoProductoPhoto);
+
+        popupMenu.getMenu().add(Menu.NONE, 1, 1, "Cámara");
+        popupMenu.getMenu().add(Menu.NONE, 2, 2, "Galeria");
+
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == 1) {
+                    if (checkCameraPermissions()) {
+                        pickImageCamera();
+                    } else {
+                        requestCameraPermissions();
+                    }
+                } else if (item.getItemId() == 2) {
+                    if (checkStoragePermission()) {
+                        pickImageGallery();
+                    } else {
+                        requestStoragePermission();
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void pickImageGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        galleryActivityResultLauncher.launch(intent);
+    }
+
+    private ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    // receive the image, if picked
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+
+                        // image picked
+                        imageUri = result.getData().getData();
+                        // change the imageButton to that image
+                        Toast.makeText(getContext(), "image picked", Toast.LENGTH_SHORT).show();
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                            nuevoProductoPhoto.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+    );
+
+    private void pickImageCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Sample Title");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Sample Description");
+
+        imageUri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        cameraActivityResultLauncher.launch(intent);
+    }
+
+    private ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    // receive the image, if taken
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // change the imageButton to the captured image
+                        Toast.makeText(getContext(), "imageTaken: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                            nuevoProductoPhoto.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+    );
+
+    private boolean checkStoragePermission() {
+        boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(getActivity(), storagePermissions, STORAGE_REQUEST_CODE);
+    }
+
+    private boolean checkCameraPermissions() {
+        boolean cameraResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean storageResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return cameraResult && storageResult;
+    }
+
+    private void requestCameraPermissions() {
+        ActivityCompat.requestPermissions(getActivity(), cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
     @Override
