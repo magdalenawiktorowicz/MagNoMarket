@@ -1,6 +1,8 @@
 package es.studium.magnomarket.ui.midespensa;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +28,8 @@ import android.Manifest;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,6 +40,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import es.studium.magnomarket.BDConexion;
@@ -51,7 +56,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     ImageButton imageButtonCantidadMinus, imageButtonCantidadPlus;
     EditText editTextCantidad;
     Spinner spinnerUnidades;
-    EditText editTextFechaCaducidad;
+    Button btnFechaCaducidad;
     SwitchCompat switchAnadirAuto;
     ImageButton imageButtonCantidadMinMinus, imageButtonCantidadMinPlus;
     EditText editTextCantidadMin;
@@ -62,6 +67,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     private static final int STORAGE_REQUEST_CODE = 101;
     private String[] cameraPermissions;
     private String[] storagePermissions;
+    private DatePickerDialog datePickerDialog;
 
 
     public NuevoProductoDespensa() {
@@ -107,7 +113,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         imageButtonCantidadPlus.setOnClickListener(this);
         editTextCantidad = view.findViewById(R.id.editTextCantidad);
         spinnerUnidades = view.findViewById(R.id.spinnerUnidades);
-        editTextFechaCaducidad = view.findViewById(R.id.editTextFechaCaducidad);
+        btnFechaCaducidad = view.findViewById(R.id.btnFechaCaducidad);
+        btnFechaCaducidad.setText(getTodayDate());
+        btnFechaCaducidad.setOnClickListener(this);
         switchAnadirAuto = view.findViewById(R.id.switchAnadirAuto);
         imageButtonCantidadMinMinus = view.findViewById(R.id.imageButtonCantidadMinMinus);
         imageButtonCantidadMinMinus.setOnClickListener(this);
@@ -117,6 +125,15 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         editTextTiendaProcedente = view.findViewById(R.id.editTextTiendaProcedente);
 
         return view;
+    }
+
+    private String getTodayDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        month = month + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return makeDateString(day, month, year);
     }
 
     @Override
@@ -131,11 +148,37 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         } else if (v.getId() == imageButtonCantidadPlus.getId()) {
             int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
             editTextCantidad.setText(String.valueOf(currentNumber + 1));
+        } else if (v.getId() == btnFechaCaducidad.getId()) {
+            Calendar cal = null;
+            DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int day) {
+                    month = month + 1;
+                    String date = makeDateString(day, month, year);
+                    btnFechaCaducidad.setText(date);
+                }
+            };
+            cal = cal.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+
+            datePickerDialog = new DatePickerDialog(getContext(), dateSetListener, year, month, day);
+            datePickerDialog.show();
+        } else if (v.getId() == imageButtonCantidadMinMinus.getId()) {
+            int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
+            if (currentNumber > 1) {
+                editTextCantidadMin.setText(String.valueOf(currentNumber - 1));
+            }
+        } else if (v.getId() == imageButtonCantidadMinPlus.getId()) {
+            int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
+            editTextCantidadMin.setText(String.valueOf(currentNumber + 1));
         }
     }
 
-
-
+    private String makeDateString(int day, int month, int year) {
+        return day + "/" + month + "/" + year;
+    }
 
 
     private void showInputImageDialog() {
