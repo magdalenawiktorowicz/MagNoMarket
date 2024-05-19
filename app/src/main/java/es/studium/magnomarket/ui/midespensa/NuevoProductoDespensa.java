@@ -12,7 +12,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -27,7 +26,6 @@ import android.Manifest;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,7 +34,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
 
     ImageView nuevoProductoPhoto;
     EditText editTextNombreProducto;
-    ImageButton imageButtonMic;
     Spinner spinnerCategorias;
     ArrayList<Categoria> categorias;
     ImageButton imageButtonCantidadMinus, imageButtonCantidadPlus;
@@ -66,6 +62,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     private static final int STORAGE_REQUEST_CODE = 101;
     private String[] cameraPermissions;
     private String[] storagePermissions;
+
 
     public NuevoProductoDespensa() {
         // Required empty public constructor
@@ -89,8 +86,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         nuevoProductoPhoto = view.findViewById(R.id.nuevoProductoPhoto);
         nuevoProductoPhoto.setOnClickListener(this);
         editTextNombreProducto = view.findViewById(R.id.editTextNombreProducto);
-        imageButtonMic = view.findViewById(R.id.imageButtonMic);
-        imageButtonMic.setOnClickListener(this);
 
         // crear un arrayList para guardar todas las Categorias y mostrarlas en el Spinner
         List<String> spinnerArray = new ArrayList<String>();
@@ -128,8 +123,20 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == nuevoProductoPhoto.getId()) {
             showInputImageDialog();
+        } else if (v.getId() == imageButtonCantidadMinus.getId()) {
+            int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
+            if (currentNumber > 1) {
+                editTextCantidad.setText(String.valueOf(currentNumber - 1));
+            }
+        } else if (v.getId() == imageButtonCantidadPlus.getId()) {
+            int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
+            editTextCantidad.setText(String.valueOf(currentNumber + 1));
         }
     }
+
+
+
+
 
     private void showInputImageDialog() {
         PopupMenu popupMenu = new PopupMenu(getContext(), nuevoProductoPhoto);

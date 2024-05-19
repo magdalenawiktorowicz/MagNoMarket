@@ -71,7 +71,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         View root = binding.getRoot();
 
         listView = root.findViewById(R.id.listView);
-        Toast.makeText(getContext(), MainActivity.idUsuario + "", Toast.LENGTH_SHORT).show();
         productoDespensas = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
 
         // asignar un listener a cada elemento de la lista
