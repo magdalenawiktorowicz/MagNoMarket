@@ -1,10 +1,12 @@
 package es.studium.magnomarket;
 
+import java.time.LocalDate;
+
 public class ProductoDespensa {
     private int idProductoDespensa;
     private String nombreProductoDespensa;
     private String imagenProductoDespensa;
-    private String fechaCaducidadProductoDespensa;
+    private LocalDate fechaCaducidadProductoDespensa;
     private int cantidadProductoDespensa;
     private String unidadProductoDespensa;
     private int autoanadirAListaCompraDespensa;
@@ -13,7 +15,7 @@ public class ProductoDespensa {
     private int idCategoriaFK;
     private int idUsuarioFK;
 
-    public ProductoDespensa(int idProductoDespensa, String nombreProductoDespensa, String imagenProductoDespensa, String fechaCaducidadProductoDespensa, int cantidadProductoDespensa, String unidadProductoDespensa, int autoanadirAListaCompraDespensa, int cantidadMinParaAnadirDespensa, String tiendaProductoDespensa, int idCategoriaFK, int idUsuarioFK) {
+    public ProductoDespensa(int idProductoDespensa, String nombreProductoDespensa, String imagenProductoDespensa, LocalDate fechaCaducidadProductoDespensa, int cantidadProductoDespensa, String unidadProductoDespensa, int autoanadirAListaCompraDespensa, int cantidadMinParaAnadirDespensa, String tiendaProductoDespensa, int idCategoriaFK, int idUsuarioFK) {
         this.idProductoDespensa = idProductoDespensa;
         this.nombreProductoDespensa = nombreProductoDespensa;
         this.imagenProductoDespensa = imagenProductoDespensa;
@@ -27,7 +29,7 @@ public class ProductoDespensa {
         this.idUsuarioFK = idUsuarioFK;
     }
 
-    public ProductoDespensa(String nombreProductoDespensa, String imagenProductoDespensa, String fechaCaducidadProductoDespensa, int cantidadProductoDespensa, String unidadProductoDespensa, int autoanadirAListaCompraDespensa, int cantidadMinParaAnadirDespensa, String tiendaProductoDespensa, int idCategoriaFK, int idUsuarioFK) {
+    public ProductoDespensa(String nombreProductoDespensa, String imagenProductoDespensa, LocalDate fechaCaducidadProductoDespensa, int cantidadProductoDespensa, String unidadProductoDespensa, int autoanadirAListaCompraDespensa, int cantidadMinParaAnadirDespensa, String tiendaProductoDespensa, int idCategoriaFK, int idUsuarioFK) {
         this.nombreProductoDespensa = nombreProductoDespensa;
         this.imagenProductoDespensa = imagenProductoDespensa;
         this.fechaCaducidadProductoDespensa = fechaCaducidadProductoDespensa;
@@ -52,7 +54,7 @@ public class ProductoDespensa {
         return imagenProductoDespensa;
     }
 
-    public String getFechaCaducidadProductoDespensa() {
+    public LocalDate getFechaCaducidadProductoDespensa() {
         return fechaCaducidadProductoDespensa;
     }
 

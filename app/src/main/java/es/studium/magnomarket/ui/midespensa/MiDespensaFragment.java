@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import es.studium.magnomarket.BDConexion;
@@ -119,16 +120,15 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (spinnerOrdenar.getSelectedItemPosition() == 0) {
-            Toast.makeText(getContext(), "First", Toast.LENGTH_SHORT).show();
+            // ordenar los productos alfabéticamente
+            productoDespensas.sort(Comparator.comparing((ProductoDespensa p) -> p.getNombreProductoDespensa().toLowerCase()));
         } else if (spinnerOrdenar.getSelectedItemPosition() == 1) {
-            Toast.makeText(getContext(), "Second", Toast.LENGTH_SHORT).show();
+            // ordenar los productos por la fecha de caducidad
         }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     @Override
     public void onClick(View v) {

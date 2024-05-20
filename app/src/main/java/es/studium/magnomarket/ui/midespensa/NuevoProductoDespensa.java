@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -204,11 +205,13 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             // comprobar los datos
             if (comprobarDatos()) {
                 int autoAnadirListaCompra = switchAnadirAuto.isChecked() ? 1 : 0;
+                String[] dateFromButton = (btnFechaCaducidad.getText().toString()).split("/");
+                LocalDate fechaCad = LocalDate.of(Integer.parseInt(dateFromButton[2]), Integer.parseInt(dateFromButton[1]), Integer.parseInt(dateFromButton[0]));
                 // crear un ProductoDespensa instance
                 ProductoDespensa pd = new ProductoDespensa(
                         editTextNombreProducto.getText().toString(),
                         String.valueOf(imageUri),
-                        btnFechaCaducidad.getText().toString(),
+                        fechaCad,
                         Integer.parseInt(editTextCantidad.getText().toString()),
                         spinnerUnidades.getSelectedItem().toString(),
                         autoAnadirListaCompra,
