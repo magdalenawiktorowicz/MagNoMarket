@@ -22,6 +22,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -216,22 +218,31 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         MainActivity.idUsuario);
                 //Toast.makeText(getContext(), pd.getNombreProductoDespensa() + "\n" + pd.getIdProductoDespensa() + "\n" + pd.getImagenProductoDespensa() + "\n" + pd.getFechaCaducidadProductoDespensa() + "\n" + pd.getCantidadProductoDespensa() + "\n" + pd.getUnidadProductoDespensa() + "\n" + pd.getAutoanadirAListaCompraDespensa() + "\n" + pd.getCantidadMinParaAnadirDespensa() + "\n" + pd.getTiendaProductoDespensa() + "\n" + pd.getIdCategoriaFK(), Toast.LENGTH_LONG).show();
                 // dar de alta
-                BDConexion.altaProductoDespensa(pd, new Callback() {
+                int res = BDConexion.altaProductoDespensa(pd, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        // Handle failure
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                        });
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        // Handle response
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            if (response.code() == 200) {
+                                // alta realizada correctamente
+                                Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                getContext().startActivity(intent);
+                            } else {
+                                Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
-
-                // indicar si se ha realizado correctamente o no
             } else {
                 // indicar que los datos no están correctos
-                Toast.makeText(getContext(), "Introduce el nombre del producto", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Introduce el nombre del producto y selecciona la categoría", Toast.LENGTH_SHORT).show();
             }
 
         } else if (v.getId() == btnAnadirListaCompra.getId()) {
@@ -262,7 +273,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     }
 
     private boolean comprobarDatos() {
-        if (!editTextNombreProducto.getText().toString().isBlank()) {
+        if (!editTextNombreProducto.getText().toString().isBlank() && (spinnerCategorias.getSelectedItemPosition() != 0)) {
             return true;
         }
         return false;
