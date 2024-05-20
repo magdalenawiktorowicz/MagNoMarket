@@ -52,6 +52,9 @@ import es.studium.magnomarket.Categoria;
 import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class NuevoProductoDespensa extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
@@ -213,6 +216,18 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         MainActivity.idUsuario);
                 //Toast.makeText(getContext(), pd.getNombreProductoDespensa() + "\n" + pd.getIdProductoDespensa() + "\n" + pd.getImagenProductoDespensa() + "\n" + pd.getFechaCaducidadProductoDespensa() + "\n" + pd.getCantidadProductoDespensa() + "\n" + pd.getUnidadProductoDespensa() + "\n" + pd.getAutoanadirAListaCompraDespensa() + "\n" + pd.getCantidadMinParaAnadirDespensa() + "\n" + pd.getTiendaProductoDespensa() + "\n" + pd.getIdCategoriaFK(), Toast.LENGTH_LONG).show();
                 // dar de alta
+                BDConexion.altaProductoDespensa(pd, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        // Handle failure
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        // Handle response
+                    }
+                });
+
                 // indicar si se ha realizado correctamente o no
             } else {
                 // indicar que los datos no están correctos
@@ -220,10 +235,26 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             }
 
         } else if (v.getId() == btnAnadirListaCompra.getId()) {
-            // comprobar los datos
-            // crear un ProductoDespensa instance
-            // añadir a la lista de compra
-            // indicar si se ha realizado correctamente o no
+//            // comprobar los datos
+//            if (comprobarDatos()) {
+//                int autoAnadirListaCompra = switchAnadirAuto.isChecked() ? 1 : 0;
+//                // crear un ProductoDespensa instance
+//                ProductoDespensa pd = new ProductoDespensa(
+//                        editTextNombreProducto.getText().toString(),
+//                        String.valueOf(imageUri),
+//                        btnFechaCaducidad.getText().toString(),
+//                        Integer.parseInt(editTextCantidad.getText().toString()),
+//                        spinnerUnidades.getSelectedItem().toString(),
+//                        autoAnadirListaCompra,
+//                        Integer.parseInt(editTextCantidadMin.getText().toString()),
+//                        editTextTiendaProcedente.getText().toString(),
+//                        spinnerCategorias.getSelectedItemPosition(),
+//                        MainActivity.idUsuario);
+//                // añadir a la lista de compra
+//
+//                // indicar si se ha realizado correctamente o no
+//            }
+
         } else if (v.getId() == btnCancelar.getId()) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);

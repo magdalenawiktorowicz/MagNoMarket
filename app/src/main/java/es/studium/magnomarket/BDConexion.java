@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import okhttp3.*;
@@ -170,5 +169,46 @@ public class BDConexion {
         });
 
         return categorias;
+    }
+
+    // ProductoDespensa - Alta
+    public static int altaProductoDespensa(ProductoDespensa productoDespensa, Callback callback) {
+        int resultado = 0;
+        String[] expiryDateArray = productoDespensa.getFechaCaducidadProductoDespensa().split("/");
+        String expiryDate = expiryDateArray[2] + "-" + expiryDateArray[1] + "-" + expiryDateArray[0];
+        OkHttpClient client = new OkHttpClient();
+        RequestBody formBody = new FormBody.Builder()
+                .add("nombreProductoDespensa", productoDespensa.getNombreProductoDespensa())
+                .add("imagenProductoDespensa", productoDespensa.getImagenProductoDespensa())
+                .add("fechaCaducidadProductoDespensa", expiryDate)
+                .add("cantidadProductoDespensa", String.valueOf(productoDespensa.getCantidadProductoDespensa()))
+                .add("unidadProductoDespensa", productoDespensa.getUnidadProductoDespensa())
+                .add("autoanadirAListaCompraDespensa", String.valueOf(productoDespensa.getAutoanadirAListaCompraDespensa()))
+                .add("cantidadMinParaAnadirDespensa", String.valueOf(productoDespensa.getCantidadMinParaAnadirDespensa()))
+                .add("tiendaProductoDespensa", productoDespensa.getTiendaProductoDespensa())
+                .add("idCategoriaFK", String.valueOf(productoDespensa.getIdCategoriaFK()))
+                .add("idUsuarioFK", String.valueOf(productoDespensa.getIdUsuarioFK()))
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://192.168.1.131/ApiRestMagno/productosdespensa.php")
+                .post(formBody)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("MainActivity", e.getMessage());
+                callback.onFailure(call, e); // Forward the failure to the provided callback
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                int resultado = response.code();
+                Log.i("MainActivity", String.valueOf(response));
+                callback.onResponse(call, response); // Forward the response to the provided callback
+            }
+        });
+        return resultado;
     }
 }
