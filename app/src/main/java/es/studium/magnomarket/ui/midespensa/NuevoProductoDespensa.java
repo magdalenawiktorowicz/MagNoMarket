@@ -50,6 +50,7 @@ import java.util.List;
 import es.studium.magnomarket.BDConexion;
 import es.studium.magnomarket.Categoria;
 import es.studium.magnomarket.MainActivity;
+import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
 
 public class NuevoProductoDespensa extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -197,7 +198,20 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         } else if (v.getId() == btnAceptar.getId()) {
             // comprobar los datos
             if (comprobarDatos()) {
+                int autoAnadirListaCompra = switchAnadirAuto.isChecked() ? 1 : 0;
                 // crear un ProductoDespensa instance
+                ProductoDespensa pd = new ProductoDespensa(
+                        editTextNombreProducto.getText().toString(),
+                        String.valueOf(imageUri),
+                        btnFechaCaducidad.getText().toString(),
+                        Integer.parseInt(editTextCantidad.getText().toString()),
+                        spinnerUnidades.getSelectedItem().toString(),
+                        autoAnadirListaCompra,
+                        Integer.parseInt(editTextCantidadMin.getText().toString()),
+                        editTextTiendaProcedente.getText().toString(),
+                        spinnerCategorias.getSelectedItemPosition(),
+                        MainActivity.idUsuario);
+                //Toast.makeText(getContext(), pd.getNombreProductoDespensa() + "\n" + pd.getIdProductoDespensa() + "\n" + pd.getImagenProductoDespensa() + "\n" + pd.getFechaCaducidadProductoDespensa() + "\n" + pd.getCantidadProductoDespensa() + "\n" + pd.getUnidadProductoDespensa() + "\n" + pd.getAutoanadirAListaCompraDespensa() + "\n" + pd.getCantidadMinParaAnadirDespensa() + "\n" + pd.getTiendaProductoDespensa() + "\n" + pd.getIdCategoriaFK(), Toast.LENGTH_LONG).show();
                 // dar de alta
                 // indicar si se ha realizado correctamente o no
             } else {

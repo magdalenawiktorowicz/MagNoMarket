@@ -99,8 +99,9 @@ public class BDConexion {
                             int idProductoDespensa = jsonObject.getInt("idProductoDespensa");
                             String nombreProductoDespensa = jsonObject.getString("nombreProductoDespensa");
                             String imagenProductoDespensa = jsonObject.getString("imagenProductoDespensa");
-                            String[] fc = jsonObject.getString("fechaCaducidadProductoDespensa").split("-");
-                            LocalDate fechaCaducidadProductoDespensa = LocalDate.of(Integer.parseInt(fc[0]), Integer.parseInt(fc[1]), Integer.parseInt(fc[2]));
+                            String fechaCaducidadProductoDespensa = jsonObject.getString("fechaCaducidadProductoDespensa");
+                            //String[] fc = jsonObject.getString("fechaCaducidadProductoDespensa").split("-");
+                            //LocalDate fechaCaducidadProductoDespensa = LocalDate.of(Integer.parseInt(fc[0]), Integer.parseInt(fc[1]), Integer.parseInt(fc[2]));
                             int cantidadProductoDespensa = jsonObject.getInt("cantidadProductoDespensa");
                             String unidadProductoDespensa = jsonObject.getString("unidadProductoDespensa");
                             int autoanadirAListaCompraDespensa = jsonObject.getInt("autoanadirAListaCompraDespensa");
