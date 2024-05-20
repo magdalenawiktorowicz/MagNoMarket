@@ -276,4 +276,40 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.784" />
 
+    <Button
+        android:id="@+id/btnAceptar"
+        android:layout_width="135dp"
+        android:layout_height="60dp"
+        android:text="@string/aceptar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnAnadirListaCompra"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.997" />
+
+    <Button
+        android:id="@+id/btnAnadirListaCompra"
+        android:layout_width="135dp"
+        android:layout_height="60dp"
+        android:text="@string/anadirALaListaCompra"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.997" />
+
+    <Button
+        android:id="@+id/btnCancelar"
+        android:layout_width="135dp"
+        android:layout_height="60dp"
+        android:text="@string/cancelar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toEndOf="@+id/btnAnadirListaCompra"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.997" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

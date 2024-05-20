@@ -18,6 +18,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.ui.AppBarConfiguration;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -37,6 +40,7 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ import java.util.List;
 
 import es.studium.magnomarket.BDConexion;
 import es.studium.magnomarket.Categoria;
+import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.R;
 
 public class NuevoProductoDespensa extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -61,6 +66,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     ImageButton imageButtonCantidadMinMinus, imageButtonCantidadMinPlus;
     EditText editTextCantidadMin;
     EditText editTextTiendaProcedente;
+    Button btnAceptar, btnAnadirListaCompra, btnCancelar;
     private Uri imageUri = null;
 
     private static final int CAMERA_REQUEST_CODE = 100;
@@ -68,7 +74,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     private String[] cameraPermissions;
     private String[] storagePermissions;
     private DatePickerDialog datePickerDialog;
-
 
     public NuevoProductoDespensa() {
         // Required empty public constructor
@@ -88,6 +93,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_nuevo_producto_despensa, container, false);
+
+        // ocultar la barra de navegación
+        ((MainActivity) getActivity()).hideBottomNavigationView();
 
         nuevoProductoPhoto = view.findViewById(R.id.nuevoProductoPhoto);
         nuevoProductoPhoto.setOnClickListener(this);
@@ -123,8 +131,21 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         imageButtonCantidadMinPlus.setOnClickListener(this);
         editTextCantidadMin = view.findViewById(R.id.editTextCantidadMin);
         editTextTiendaProcedente = view.findViewById(R.id.editTextTiendaProcedente);
+        btnAceptar = view.findViewById(R.id.btnAceptar);
+        btnAceptar.setOnClickListener(this);
+        btnAnadirListaCompra = view.findViewById(R.id.btnAnadirListaCompra);
+        btnAnadirListaCompra.setOnClickListener(this);
+        btnCancelar = view.findViewById(R.id.btnCancelar);
+        btnCancelar.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Show Bottom Navigation View again when leaving this fragment
+        ((MainActivity) getActivity()).showBottomNavigationView();
     }
 
     private String getTodayDate() {
@@ -173,7 +194,33 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         } else if (v.getId() == imageButtonCantidadMinPlus.getId()) {
             int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
             editTextCantidadMin.setText(String.valueOf(currentNumber + 1));
+        } else if (v.getId() == btnAceptar.getId()) {
+            // comprobar los datos
+            if (comprobarDatos()) {
+                // crear un ProductoDespensa instance
+                // dar de alta
+                // indicar si se ha realizado correctamente o no
+            } else {
+                // indicar que los datos no están correctos
+                Toast.makeText(getContext(), "Introduce el nombre del producto", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (v.getId() == btnAnadirListaCompra.getId()) {
+            // comprobar los datos
+            // crear un ProductoDespensa instance
+            // añadir a la lista de compra
+            // indicar si se ha realizado correctamente o no
+        } else if (v.getId() == btnCancelar.getId()) {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
         }
+    }
+
+    private boolean comprobarDatos() {
+        if (!editTextNombreProducto.getText().toString().isBlank()) {
+            return true;
+        }
+        return false;
     }
 
     private String makeDateString(int day, int month, int year) {
@@ -291,11 +338,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

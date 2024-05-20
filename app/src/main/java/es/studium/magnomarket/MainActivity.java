@@ -2,11 +2,16 @@ package es.studium.magnomarket;
 
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.Menu;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -16,6 +21,7 @@ import es.studium.magnomarket.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     public static int idUsuario;
+    private BottomNavigationView navView;
     private ActivityMainBinding binding;
 
     @Override
@@ -25,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -34,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
     }
 
+    public void showBottomNavigationView() {
+        navView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideBottomNavigationView() {
+        navView.setVisibility(View.GONE);
+    }
 }
