@@ -1,6 +1,7 @@
 package es.studium.magnomarket.ui.midespensa;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import java.time.LocalDate;
 import java.util.ArrayList;
-
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
 
 public class AdapterListItem extends BaseAdapter {
-    Context contexto;
-    int distribucion;
-    ArrayList<ProductoDespensa> items;
+    private Context contexto;
+    private int distribucion;
+    private ArrayList<ProductoDespensa> items;
 
     public AdapterListItem(Context context, int layout, ArrayList<ProductoDespensa> elementos) {
         this.contexto = context;
@@ -43,9 +45,11 @@ public class AdapterListItem extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         View v = view;
 
-        // inflar la vista con la propia distribución
-        LayoutInflater layoutInflater = LayoutInflater.from(this.contexto);
-        v = layoutInflater.inflate(R.layout.list_item, null);
+        // Inflate the view if it hasn't been already
+        if (v == null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(this.contexto);
+            v = layoutInflater.inflate(this.distribucion, null);
+        }
 
         ProductoDespensa currentItem = items.get(position);
 
@@ -53,8 +57,29 @@ public class AdapterListItem extends BaseAdapter {
         textView.setText(currentItem.getNombreProductoDespensa());
 
         ImageView productPhoto = v.findViewById(R.id.imageView);
-        // to be continued...
+        String imageUrl = currentItem.getImagenProductoDespensa();
+
+        Glide.with(contexto)
+                .load(Uri.parse(imageUrl))
+                .placeholder(R.drawable.no_photo)
+                .error(R.drawable.no_photo)
+                .into(productPhoto);
+
+
+
+        LocalDate now = LocalDate.now();
+        // expired
+        if (currentItem.getFechaCaducidadProductoDespensa().isBefore(now)) {
+            v.setBackgroundColor(contexto.getResources().getColor(R.color.expired));
+        } else if (currentItem.getFechaCaducidadProductoDespensa().isAfter(now) && currentItem.getFechaCaducidadProductoDespensa().isBefore(now.plusDays(3))) {
+            v.setBackgroundColor(contexto.getResources().getColor(R.color.about_to_expire));
+        } else if (currentItem.getFechaCaducidadProductoDespensa().isAfter(now.plusDays(3))) {
+            v.setBackgroundColor(contexto.getResources().getColor(R.color.good));
+        }
+
+
 
         return v;
     }
 }
+

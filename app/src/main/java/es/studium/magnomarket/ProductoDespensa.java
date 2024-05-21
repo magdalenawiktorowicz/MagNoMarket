@@ -53,6 +53,9 @@ public class ProductoDespensa {
     public String getImagenProductoDespensa() {
         return imagenProductoDespensa;
     }
+    public void setImagenProductoDespensa(String imageUri) {
+        this.imagenProductoDespensa = imageUri;
+    }
 
     public LocalDate getFechaCaducidadProductoDespensa() {
         return fechaCaducidadProductoDespensa;

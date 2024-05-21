@@ -7,25 +7,27 @@
 
     <ImageView
         android:id="@+id/imageView"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center_vertical"
-        android:layout_margin="25dp" />
+        android:layout_margin="15dp"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="250dp"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="TextView"
+        android:textAlignment="textStart"
         android:textColor="#333" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="30dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
         app:srcCompat="@android:drawable/ic_menu_help" />
 
 </LinearLayout>

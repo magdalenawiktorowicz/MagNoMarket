@@ -2,9 +2,11 @@ package es.studium.magnomarket.ui.midespensa;
 
 import static es.studium.magnomarket.Login.LoginCredenciales;
 
+import android.Manifest;
 import android.content.Context;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -50,6 +54,10 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     FragmentManager fm;
     FragmentTransaction ft;
     Fragment fragmentNuevoProductoDespensa;
+    private static final int STORAGE_REQUEST_CODE = 101;
+    private String[] storagePermissions;
+
+    AdapterListItem adaptador;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +68,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
             // obtener el valor de idUsuario, si no - por defecto el valor de la variable estática idUsuario
             MainActivity.idUsuario = sharedpreferences.getInt("usuarioID", MainActivity.idUsuario);
         }
+        storagePermissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
 
     }
 
@@ -68,11 +77,11 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         MiDespensaViewModel miDespensaViewModel =
                 new ViewModelProvider(this).get(MiDespensaViewModel.class);
 
+        productoDespensas = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
+
         binding = FragmentMiDespensaBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
         listView = root.findViewById(R.id.listView);
-        productoDespensas = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
 
         // asignar un listener a cada elemento de la lista
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,11 +92,14 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         });
 
         // Crear un Adaptador
-        AdapterListItem adaptador = new AdapterListItem(getContext(), R.layout.list_item, productoDespensas);
-
+        adaptador = new AdapterListItem(getContext(), R.layout.list_item, productoDespensas);
+        if (checkStoragePermission()) {
+            adaptador.notifyDataSetChanged();
+        } else {
+            requestStoragePermission();
+        }
         // Asignar el adaptador a nuestro ListView
         listView.setAdapter(adaptador);
-
 
         List<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("alfabéticamente");
@@ -111,6 +123,15 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         return root;
     }
 
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(getActivity(), storagePermissions, STORAGE_REQUEST_CODE);
+    }
+
+    private boolean checkStoragePermission() {
+        boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -122,8 +143,11 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         if (spinnerOrdenar.getSelectedItemPosition() == 0) {
             // ordenar los productos alfabéticamente
             productoDespensas.sort(Comparator.comparing((ProductoDespensa p) -> p.getNombreProductoDespensa().toLowerCase()));
+            adaptador.notifyDataSetChanged();
         } else if (spinnerOrdenar.getSelectedItemPosition() == 1) {
             // ordenar los productos por la fecha de caducidad
+            productoDespensas.sort(Comparator.comparing((ProductoDespensa p) -> p.getFechaCaducidadProductoDespensa()));
+            adaptador.notifyDataSetChanged();
         }
     }
 
