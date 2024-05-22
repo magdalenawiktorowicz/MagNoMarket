@@ -59,22 +59,31 @@ public class AdapterListItem extends BaseAdapter {
         ImageView productPhoto = v.findViewById(R.id.imageView);
         String imageUrl = currentItem.getImagenProductoDespensa();
 
-        Glide.with(contexto)
-                .load(Uri.parse(imageUrl))
-                .placeholder(R.drawable.no_photo)
-                .error(R.drawable.no_photo)
-                .into(productPhoto);
+        if (imageUrl != null && imageUrl != "null" && !imageUrl.isBlank()) {
+            Glide.with(contexto)
+                    .load(Uri.parse(imageUrl))
+                    .placeholder(R.drawable.no_photo)
+                    .error(R.drawable.no_photo)
+                    .into(productPhoto);
+        } else {
+            productPhoto.setImageResource(R.drawable.no_photo);
+        }
 
 
+
+        ImageView simbolo = v.findViewById(R.id.imageView3);
 
         LocalDate now = LocalDate.now();
         // expired
         if (currentItem.getFechaCaducidadProductoDespensa().isBefore(now)) {
             v.setBackgroundColor(contexto.getResources().getColor(R.color.expired));
-        } else if (currentItem.getFechaCaducidadProductoDespensa().isAfter(now) && currentItem.getFechaCaducidadProductoDespensa().isBefore(now.plusDays(3))) {
+            simbolo.setImageResource(R.drawable.expired);
+        } else if (currentItem.getFechaCaducidadProductoDespensa().isEqual(now) || (currentItem.getFechaCaducidadProductoDespensa().isAfter(now) && currentItem.getFechaCaducidadProductoDespensa().isBefore(now.plusDays(3))) || currentItem.getFechaCaducidadProductoDespensa().isEqual(now.plusDays(3))) {
             v.setBackgroundColor(contexto.getResources().getColor(R.color.about_to_expire));
+            simbolo.setImageResource(R.drawable.about_to_expire);
         } else if (currentItem.getFechaCaducidadProductoDespensa().isAfter(now.plusDays(3))) {
             v.setBackgroundColor(contexto.getResources().getColor(R.color.good));
+            simbolo.setImageResource(R.drawable.good);
         }
 
 
