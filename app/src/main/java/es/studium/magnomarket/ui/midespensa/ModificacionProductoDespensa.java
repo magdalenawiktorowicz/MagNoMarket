@@ -1,10 +1,12 @@
 package es.studium.magnomarket.ui.midespensa;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +46,7 @@ public class ModificacionProductoDespensa extends Fragment {
 
         LinearLayout bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
+        bottomSheetBehavior.setHideable(true);
         partialContent = view.findViewById(R.id.partial_content);
         fullContent = view.findViewById(R.id.full_content);
 
@@ -56,16 +58,19 @@ public class ModificacionProductoDespensa extends Fragment {
                     // When bottom sheet is fully expanded
                     fullContent.setVisibility(View.VISIBLE);
                     partialContent.setVisibility(View.GONE);
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     // When bottom sheet is collapsed or hidden
                     fullContent.setVisibility(View.GONE);
                     partialContent.setVisibility(View.VISIBLE);
+                } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.getPrimaryNavigationFragment();
+                    ((MainActivity) getActivity()).showBottomNavigationView();
                 }
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                // Optional: Handle sliding events
             }
         });
 
