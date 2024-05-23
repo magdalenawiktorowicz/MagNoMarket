@@ -59,7 +59,7 @@ public class AdapterListItem extends BaseAdapter {
         ImageView productPhoto = v.findViewById(R.id.imageView);
         String imageUrl = currentItem.getImagenProductoDespensa();
 
-        if (imageUrl != null && imageUrl != "null" && !imageUrl.isBlank()) {
+        if (imageUrl != null && !imageUrl.equals("null") && !imageUrl.isBlank()) {
             Glide.with(contexto)
                     .load(Uri.parse(imageUrl))
                     .placeholder(R.drawable.no_photo)

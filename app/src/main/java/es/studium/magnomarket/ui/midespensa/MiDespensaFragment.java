@@ -54,6 +54,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     FragmentManager fm;
     FragmentTransaction ft;
     Fragment fragmentNuevoProductoDespensa;
+    ModificacionProductoDespensa fragmentModificacionProductoDespensa;
     private static final int STORAGE_REQUEST_CODE = 101;
     private String[] storagePermissions;
 
@@ -88,6 +89,13 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), "Has seleccionado " + productoDespensas.get(position).toString(), Toast.LENGTH_SHORT).show();
+                fragmentModificacionProductoDespensa = new ModificacionProductoDespensa(productoDespensas.get(position));
+                fm = getActivity().getSupportFragmentManager();
+                ft = fm.beginTransaction();
+                ft.add(R.id.container, fragmentModificacionProductoDespensa, "modificacionProductoDespensa")
+                        .addToBackStack(null)
+                        .commit();
+                fragmentModificacionProductoDespensa.showBottomSheet();
             }
         });
 
