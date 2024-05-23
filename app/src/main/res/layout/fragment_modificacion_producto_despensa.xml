@@ -11,8 +11,8 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical"
+        android:background="@color/white"
         app:behavior_peekHeight="290dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="290dp"
             android:layout_gravity="bottom"
-            android:background="@color/orange"
+            android:background="@drawable/rounded"
             android:visibility="visible">
 
             <EditText
@@ -36,7 +36,7 @@
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.046" />
+                app:layout_constraintVertical_bias="0.13" />
 
             <TextView
                 android:id="@+id/textViewModCantidad"
@@ -48,7 +48,7 @@
                 app:layout_constraintHorizontal_bias="0.088"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.232" />
+                app:layout_constraintVertical_bias="0.324" />
 
             <ImageButton
                 android:id="@+id/imageButtonModCantidadMinus"
@@ -60,7 +60,7 @@
                 app:layout_constraintHorizontal_bias="0.083"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                app:layout_constraintVertical_bias="0.452" />
 
             <EditText
                 android:id="@+id/editTextModCantidad"
@@ -73,7 +73,7 @@
                 app:layout_constraintHorizontal_bias="0.199"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                app:layout_constraintVertical_bias="0.452" />
 
             <ImageButton
                 android:id="@+id/imageButtonModCantidadPlus"
@@ -85,7 +85,7 @@
                 app:layout_constraintHorizontal_bias="0.339"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                app:layout_constraintVertical_bias="0.452" />
 
             <TextView
                 android:id="@+id/textViewModUnidad"
@@ -96,7 +96,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.228" />
+                app:layout_constraintVertical_bias="0.321" />
 
             <Spinner
                 android:id="@+id/spinnerModUnidades"
@@ -109,7 +109,7 @@
                 app:layout_constraintHorizontal_bias="0.787"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                app:layout_constraintVertical_bias="0.452" />
 
             <TextView
                 android:id="@+id/textViewModFechaCaducidad"
@@ -121,7 +121,7 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.553" />
+                app:layout_constraintVertical_bias="0.608" />
 
             <Button
                 android:id="@+id/btnModFechaCaducidad"
@@ -137,7 +137,7 @@
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.714" />
+                app:layout_constraintVertical_bias="0.751" />
 
             <Button
                 android:id="@+id/btnModEditar"
@@ -181,10 +181,23 @@
                 android:layout_height="39dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.07" />
+                app:layout_constraintVertical_bias="0.015" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:scaleX="1.5"
+                android:src="@drawable/drag"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.03" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
