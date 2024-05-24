@@ -87,7 +87,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "Has seleccionado " + productoDespensas.get(position).toString(), Toast.LENGTH_SHORT).show();
                 fragmentModificacionProductoDespensa = new ModificacionProductoDespensa(productoDespensas.get(position));
                 fm = getActivity().getSupportFragmentManager();
                 ft = fm.beginTransaction();

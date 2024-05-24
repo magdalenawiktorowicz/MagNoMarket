@@ -40,7 +40,6 @@
     <string name="anadirALaListaCompra">Añadir a la lista de compra</string>
     <string name="cancelar">Cancelar</string>
     <string name="spinnerPrompt">Selecciona la categoría...</string>
-    <string name="editar">Editar</string>
     <string name="eliminar">Eliminar</string>
 
 </resources>
