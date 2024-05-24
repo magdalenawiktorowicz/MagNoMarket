@@ -77,7 +77,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
                              ViewGroup container, Bundle savedInstanceState) {
         MiDespensaViewModel miDespensaViewModel =
                 new ViewModelProvider(this).get(MiDespensaViewModel.class);
-
         productoDespensas = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
 
         binding = FragmentMiDespensaBinding.inflate(inflater, container, false);
@@ -160,7 +159,8 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
     @Override
     public void onClick(View v) {
@@ -169,14 +169,12 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
             buttonVistaCategorias.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.azul_claro)));
             buttonVistaLista.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.naranja)));
             buttonVistaLista.setEnabled(false);
-        }
-        else if (v.getId() == buttonVistaCategorias.getId()) {
+        } else if (v.getId() == buttonVistaCategorias.getId()) {
             buttonVistaLista.setEnabled(true);
             buttonVistaLista.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.azul_claro)));
             buttonVistaCategorias.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.naranja)));
             buttonVistaCategorias.setEnabled(false);
-        }
-        else if (v.getId() == floatingButtonAdd.getId()) {
+        } else if (v.getId() == floatingButtonAdd.getId()) {
             fragmentNuevoProductoDespensa = new NuevoProductoDespensa();
             fm = getActivity().getSupportFragmentManager();
             ft = fm.beginTransaction();
