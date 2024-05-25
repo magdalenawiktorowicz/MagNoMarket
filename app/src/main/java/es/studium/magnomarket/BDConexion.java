@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -173,10 +174,7 @@ public class BDConexion {
     }
 
     // ProductoDespensa - Alta
-    public static int altaProductoDespensa(ProductoDespensa productoDespensa, Callback callback) {
-        int resultado = 0;
-        //String[] expiryDateArray = productoDespensa.getFechaCaducidadProductoDespensa().split("/");
-        //String expiryDate = expiryDateArray[2] + "-" + expiryDateArray[1] + "-" + expiryDateArray[0];
+    public static void altaProductoDespensa(ProductoDespensa productoDespensa, Callback callback) {
         OkHttpClient client = new OkHttpClient();
         RequestBody formBody = new FormBody.Builder()
                 .add("nombreProductoDespensa", productoDespensa.getNombreProductoDespensa())
@@ -210,6 +208,39 @@ public class BDConexion {
                 callback.onResponse(call, response); // Forward the response to the provided callback
             }
         });
-        return resultado;
     }
+
+    // ProductoDespensa - modificación
+    public static void modificacionProducto(ProductoDespensa producto, Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder queryUrlBuilder = HttpUrl.parse("http://192.168.1.131/ApiRestMagno/productosdespensa.php").newBuilder();
+
+        // Add query parameters
+        queryUrlBuilder.addQueryParameter("idProductoDespensa", String.valueOf(producto.getIdProductoDespensa()));
+        queryUrlBuilder.addQueryParameter("nombreProductoDespensa", producto.getNombreProductoDespensa().toString());
+        queryUrlBuilder.addQueryParameter("imagenProductoDespensa", producto.getImagenProductoDespensa().toString());
+        queryUrlBuilder.addQueryParameter("fechaCaducidadProductoDespensa", producto.getFechaCaducidadProductoDespensa().toString());
+        queryUrlBuilder.addQueryParameter("cantidadProductoDespensa", String.valueOf(producto.getCantidadProductoDespensa()));
+        queryUrlBuilder.addQueryParameter("unidadProductoDespensa", producto.getUnidadProductoDespensa().toString());
+        queryUrlBuilder.addQueryParameter("autoanadirAListaCompraDespensa", String.valueOf(producto.getAutoanadirAListaCompraDespensa()));
+        queryUrlBuilder.addQueryParameter("cantidadMinParaAnadirDespensa", String.valueOf(producto.getCantidadMinParaAnadirDespensa()));
+        queryUrlBuilder.addQueryParameter("tiendaProductoDespensa", producto.getTiendaProductoDespensa().toString());
+        queryUrlBuilder.addQueryParameter("idCategoriaFK", String.valueOf(producto.getIdCategoriaFK()));
+        queryUrlBuilder.addQueryParameter("idUsuarioFK", String.valueOf(producto.getIdUsuarioFK()));
+
+        // Create request body (empty for PUT requests)
+        RequestBody requestBody = new FormBody.Builder()
+                .build();
+
+        // Build the request
+        Request request = new Request.Builder()
+                .url(queryUrlBuilder.build())
+                .put(requestBody)
+                .build();
+
+        // Execute the request asynchronously
+        client.newCall(request).enqueue(callback);
+    }
+
+
 }

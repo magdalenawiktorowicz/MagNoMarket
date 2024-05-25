@@ -89,6 +89,38 @@ public class ProductoDespensa {
         return idUsuarioFK;
     }
 
+    public void setNombreProductoDespensa(String nombreProductoDespensa) {
+        this.nombreProductoDespensa = nombreProductoDespensa;
+    }
+
+    public void setFechaCaducidadProductoDespensa(LocalDate fechaCaducidadProductoDespensa) {
+        this.fechaCaducidadProductoDespensa = fechaCaducidadProductoDespensa;
+    }
+
+    public void setCantidadProductoDespensa(int cantidadProductoDespensa) {
+        this.cantidadProductoDespensa = cantidadProductoDespensa;
+    }
+
+    public void setUnidadProductoDespensa(String unidadProductoDespensa) {
+        this.unidadProductoDespensa = unidadProductoDespensa;
+    }
+
+    public void setAutoanadirAListaCompraDespensa(int autoanadirAListaCompraDespensa) {
+        this.autoanadirAListaCompraDespensa = autoanadirAListaCompraDespensa;
+    }
+
+    public void setCantidadMinParaAnadirDespensa(int cantidadMinParaAnadirDespensa) {
+        this.cantidadMinParaAnadirDespensa = cantidadMinParaAnadirDespensa;
+    }
+
+    public void setTiendaProductoDespensa(String tiendaProductoDespensa) {
+        this.tiendaProductoDespensa = tiendaProductoDespensa;
+    }
+
+    public void setIdCategoriaFK(int idCategoriaFK) {
+        this.idCategoriaFK = idCategoriaFK;
+    }
+
     @Override
     public String toString() {
         return getNombreProductoDespensa();

@@ -221,7 +221,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         MainActivity.idUsuario);
                 //Toast.makeText(getContext(), pd.getNombreProductoDespensa() + "\n" + pd.getIdProductoDespensa() + "\n" + pd.getImagenProductoDespensa() + "\n" + pd.getFechaCaducidadProductoDespensa() + "\n" + pd.getCantidadProductoDespensa() + "\n" + pd.getUnidadProductoDespensa() + "\n" + pd.getAutoanadirAListaCompraDespensa() + "\n" + pd.getCantidadMinParaAnadirDespensa() + "\n" + pd.getTiendaProductoDespensa() + "\n" + pd.getIdCategoriaFK(), Toast.LENGTH_LONG).show();
                 // dar de alta
-                int res = BDConexion.altaProductoDespensa(pd, new Callback() {
+                BDConexion.altaProductoDespensa(pd, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         new Handler(Looper.getMainLooper()).post(() -> {
@@ -245,7 +245,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                 });
             } else {
                 // indicar que los datos no están correctos
-                Toast.makeText(getContext(), "Introduce el nombre del producto y selecciona la categoría", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Introduce el nombre del producto y selecciona la categoría.", Toast.LENGTH_SHORT).show();
             }
 
         } else if (v.getId() == btnAnadirListaCompra.getId()) {

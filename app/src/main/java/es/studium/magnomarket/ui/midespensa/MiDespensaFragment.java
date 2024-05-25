@@ -99,6 +99,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
 
         // Crear un Adaptador
         adaptador = new AdapterListItem(getContext(), R.layout.list_item, productoDespensas);
+        adaptador.notifyDataSetChanged();
         if (checkStoragePermission()) {
             adaptador.notifyDataSetChanged();
         } else {

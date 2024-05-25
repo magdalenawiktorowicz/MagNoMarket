@@ -22,6 +22,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +47,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,6 +58,9 @@ import es.studium.magnomarket.Categoria;
 import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ModificacionProductoDespensa extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     ProductoDespensa producto;
@@ -285,6 +291,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         datePickerDialog = new DatePickerDialog(getContext(), dateSetListener, year, month, day);
+        datePickerDialog.updateDate(producto.getFechaCaducidadProductoDespensa().getYear(), producto.getFechaCaducidadProductoDespensa().getMonthValue()-1, producto.getFechaCaducidadProductoDespensa().getDayOfMonth());
         datePickerDialog.show();
     }
 
@@ -304,9 +311,41 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 showCalendar(btnModFechaCaducidad);
             } else if (v.getId() == btnModAceptar.getId()) {
                 // COMPROBAR LOS DATOS
-                // MODIFICAR
-                // INFORMAR SOBRE EL RESULTADO
-                // HIDE THE BOTTOM SHEET - check if its updated
+                if (comprobarDatos(editTextModNombre)) {
+                    producto.setNombreProductoDespensa(editTextModNombre.getText().toString());
+                    producto.setCantidadProductoDespensa(Integer.parseInt(editTextModCantidad.getText().toString()));
+                    producto.setUnidadProductoDespensa(spinnerModUnidades.getSelectedItem().toString());
+                    String[] dateFromButton = (btnModFechaCaducidad.getText().toString()).split("/");
+                    LocalDate fechaCad = LocalDate.of(Integer.parseInt(dateFromButton[2]), Integer.parseInt(dateFromButton[1]), Integer.parseInt(dateFromButton[0]));
+                    producto.setFechaCaducidadProductoDespensa(fechaCad);
+                    // MODIFICAR
+                    BDConexion.modificacionProducto(producto, new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                if (response.code() == 200) {
+                                    // alta realizada correctamente
+                                    Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                    getContext().startActivity(intent);
+                                } else {
+                                    Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Introduce el nombre del producto.", Toast.LENGTH_SHORT).show();
+                }
             } else if (v.getId() == btnModAnadirListaCompra.getId()) {
                 // COMPROBAR LOS DATOS
                 // AÑADIR A LA LISTA DE COMPRA
@@ -342,22 +381,71 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
                 editTextCantidadMinMOD.setText(String.valueOf(currentNumber + 1));
             } else if (v.getId() == btnAceptarMOD.getId()) {
-                // COMPROBAR LOS DATOS
-                // MODIFICAR
-                // INFORMAR SOBRE EL RESULTADO
-                // HIDE THE BOTTOM SHEET - check if its updated
+                if (comprobarDatos(editTextModNombreProductoMOD, spinnerCategoriasMOD)) {
+                    int autoAnadirListaCompra = switchAnadirAutoMOD.isChecked() ? 1 : 0;
+                    producto.setNombreProductoDespensa(editTextModNombreProductoMOD.getText().toString());
+                    //producto.setImagenProductoDespensa(String.valueOf(Uri.parse(productoPhotoMOD.toString())));
+                    producto.setIdCategoriaFK(spinnerCategoriasMOD.getSelectedItemPosition());
+                    producto.setCantidadProductoDespensa(Integer.parseInt(editTextCantidadMOD.getText().toString()));
+                    producto.setUnidadProductoDespensa(spinnerUnidadesMOD.getSelectedItem().toString());
+                    String[] dateFromButton = (btnFechaCaducidadMOD.getText().toString()).split("/");
+                    LocalDate fechaCad = LocalDate.of(Integer.parseInt(dateFromButton[2]), Integer.parseInt(dateFromButton[1]), Integer.parseInt(dateFromButton[0]));
+                    producto.setFechaCaducidadProductoDespensa(fechaCad);
+                    producto.setAutoanadirAListaCompraDespensa(autoAnadirListaCompra);
+                    producto.setCantidadMinParaAnadirDespensa(Integer.parseInt(editTextCantidadMinMOD.getText().toString()));
+                    producto.setTiendaProductoDespensa(editTextTiendaProcedenteMOD.getText().toString());
+                    // MODIFICAR
+                    BDConexion.modificacionProducto(producto, new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                if (response.code() == 200) {
+                                    // modificación realizada correctamente
+                                    Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                    getContext().startActivity(intent);
+
+                                } else {
+                                    Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Introduce el nombre del producto y selecciona la categoría.", Toast.LENGTH_SHORT).show();
+                }
             } else if (v.getId() == btnAnadirListaCompraMOD.getId()) {
                 // COMPROBAR LOS DATOS
                 // AÑADIR A LA LISTA DE COMPRA
                 // PREGUNTAR SOBRE LA CANTIDAD????
                 // HIDE THE BOTTOM SHEET
             } else if (v.getId() == btnCancelarMOD.getId()) {
-                // COMPROBAR LOS DATOS
-                // ELIMINAR
-                // INFORMAR SOBRE EL RESULTADO
-                // HIDE THE BOTTOM SHEET - check if its updated
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         }
+    }
+
+    private boolean comprobarDatos(EditText et, Spinner sp) {
+        if (!et.getText().toString().isBlank() && (sp.getSelectedItemPosition() != 0)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean comprobarDatos(EditText et) {
+        if (!et.getText().toString().isBlank()) {
+            return true;
+        }
+        return false;
     }
 
     private void showInputImageDialog() {
@@ -403,13 +491,17 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
 
                         // image picked
                         imageUri = result.getData().getData();
+                        producto.setImagenProductoDespensa(String.valueOf(imageUri));
                         // change the imageButton to that image
                         Toast.makeText(getContext(), "image picked", Toast.LENGTH_SHORT).show();
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                            productoPhotoMOD.setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        if (imageUri.toString() != null && !imageUri.toString().equals("null") && !imageUri.toString().isBlank()) {
+                            Glide.with(getContext())
+                                    .load(imageUri)
+                                    .placeholder(R.drawable.no_photo)
+                                    .error(R.drawable.no_photo)
+                                    .into(productoPhotoMOD);
+                        } else {
+                            productoPhotoMOD.setImageResource(R.drawable.no_photo);
                         }
                     }
                 }
@@ -436,11 +528,15 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // change the imageButton to the captured image
                         Toast.makeText(getContext(), "imageTaken: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                            productoPhotoMOD.setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        producto.setImagenProductoDespensa(String.valueOf(imageUri));
+                        if (imageUri.toString() != null && !imageUri.toString().equals("null") && !imageUri.toString().isBlank()) {
+                            Glide.with(getContext())
+                                    .load(imageUri)
+                                    .placeholder(R.drawable.no_photo)
+                                    .error(R.drawable.no_photo)
+                                    .into(productoPhotoMOD);
+                        } else {
+                            productoPhotoMOD.setImageResource(R.drawable.no_photo);
                         }
                     }
                 }
