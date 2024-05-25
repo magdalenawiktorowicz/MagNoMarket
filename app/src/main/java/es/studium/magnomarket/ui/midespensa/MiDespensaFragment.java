@@ -52,7 +52,8 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     SharedPreferences sharedpreferences;
     FragmentManager fm;
     FragmentTransaction ft;
-    Fragment fragmentNuevoProductoDespensa;
+    //Fragment fragmentNuevoProductoDespensa;
+    NuevoProductoDespensa fragmentNuevoProductoDespensa;
     ModificacionProductoDespensa fragmentModificacionProductoDespensa;
     private static final int STORAGE_REQUEST_CODE = 101;
     private String[] storagePermissions;
