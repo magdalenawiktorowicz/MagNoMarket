@@ -59,6 +59,8 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
 
     AdapterListItem adaptador;
     BorradoProducto borradoProducto;
+    MiDespensaCallback despensaCallback;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         }
         storagePermissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
 
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -78,7 +81,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         MiDespensaViewModel miDespensaViewModel =
                 new ViewModelProvider(this).get(MiDespensaViewModel.class);
         productosDespensa = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
-
         binding = FragmentMiDespensaBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         listView = root.findViewById(R.id.listView);
@@ -87,7 +89,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                fragmentModificacionProductoDespensa = new ModificacionProductoDespensa(productosDespensa.get(position));
+                fragmentModificacionProductoDespensa = new ModificacionProductoDespensa(productosDespensa.get(position), despensaCallback);
                 fm = getActivity().getSupportFragmentManager();
                 ft = fm.beginTransaction();
                 ft.add(R.id.container, fragmentModificacionProductoDespensa, "modificacionProductoDespensa")
@@ -109,6 +111,14 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
 
         // Crear un Adaptador
         adaptador = new AdapterListItem(getContext(), R.layout.list_item, productosDespensa);
+        despensaCallback = new MiDespensaCallback() {
+            @Override
+            public void onOperacionCorrectaUpdated(boolean operacionCorrecta) {
+                if (operacionCorrecta) {
+                    adaptador.notifyDataSetChanged();
+                }
+            }
+        };
         adaptador.notifyDataSetChanged();
         if (checkStoragePermission()) {
             adaptador.notifyDataSetChanged();

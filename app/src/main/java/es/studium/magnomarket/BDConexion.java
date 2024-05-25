@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -174,7 +173,7 @@ public class BDConexion {
     }
 
     // ProductoDespensa - Alta
-    public static void altaProductoDespensa(ProductoDespensa productoDespensa, Callback callback) {
+    public static void anadirProductoDespensa(ProductoDespensa productoDespensa, Callback callback) {
         OkHttpClient client = new OkHttpClient();
         RequestBody formBody = new FormBody.Builder()
                 .add("nombreProductoDespensa", productoDespensa.getNombreProductoDespensa())
@@ -211,7 +210,7 @@ public class BDConexion {
     }
 
     // ProductoDespensa - modificación
-    public static void modificacionProducto(ProductoDespensa producto, Callback callback) {
+    public static void modificarProductoDespensa(ProductoDespensa producto, Callback callback) {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder queryUrlBuilder = HttpUrl.parse("http://192.168.1.131/ApiRestMagno/productosdespensa.php").newBuilder();
 
@@ -242,5 +241,14 @@ public class BDConexion {
         client.newCall(request).enqueue(callback);
     }
 
+    // ProductoDespensa - baja
+    public static void borrarProductoDespensa(ProductoDespensa producto, Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.131/ApiRestMagno/productosdespensa.php?idProductoDespensa=" + producto.getIdProductoDespensa())
+                .delete()
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 
 }

@@ -2,15 +2,23 @@ package es.studium.magnomarket.ui.midespensa;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
-
+import java.io.IOException;
+import es.studium.magnomarket.BDConexion;
+import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class BorradoProducto extends DialogFragment implements View.OnClickListener {
 
@@ -18,6 +26,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
     private TextView mensajeConfirmacion;
     private Button btnSi;
     private Button btnNo;
+
     public BorradoProducto(ProductoDespensa pr) {
         this.producto = pr;
     }
@@ -41,7 +50,29 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
         if (v.getId() == btnNo.getId()) {
             dismiss();
         } else if (v.getId() == btnSi.getId()) {
-            // ELIMINAR
+            BDConexion.borrarProductoDespensa(producto, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (response.code() == 200) {
+                            // borrado realizado correctamente
+                            Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                            dismiss();
+                        }
+                    });
+                }
+            });
         }
 
     }

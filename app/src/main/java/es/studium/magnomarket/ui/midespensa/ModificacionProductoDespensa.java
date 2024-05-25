@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -92,12 +91,12 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
     private String[] cameraPermissions;
     private String[] storagePermissions;
     private DatePickerDialog datePickerDialog;
-
     BorradoProducto borradoProducto;
+    private MiDespensaCallback callback;
 
-
-    public ModificacionProductoDespensa(ProductoDespensa productoDespensa) {
+    public ModificacionProductoDespensa(ProductoDespensa productoDespensa, MiDespensaCallback callback) {
         this.producto = productoDespensa;
+        this.callback = callback;
     }
 
     @Override
@@ -321,7 +320,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     LocalDate fechaCad = LocalDate.of(Integer.parseInt(dateFromButton[2]), Integer.parseInt(dateFromButton[1]), Integer.parseInt(dateFromButton[0]));
                     producto.setFechaCaducidadProductoDespensa(fechaCad);
                     // MODIFICAR
-                    BDConexion.modificacionProducto(producto, new Callback() {
+                    BDConexion.modificarProductoDespensa(producto, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             new Handler(Looper.getMainLooper()).post(() -> {
@@ -336,8 +335,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                                 if (response.code() == 200) {
                                     // alta realizada correctamente
                                     Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    getContext().startActivity(intent);
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                                    callback.onOperacionCorrectaUpdated(true);
                                 } else {
                                     Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -359,10 +358,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     borradoProducto = new BorradoProducto(producto);
                     borradoProducto.setCancelable(false);
                     borradoProducto.show(getActivity().getSupportFragmentManager(), "Borrado Producto");
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 }
-                // ELIMINAR
-                // INFORMAR SOBRE EL RESULTADO
-                // HIDE THE BOTTOM SHEET - check if its updated
             }
         }
         // fullContent
@@ -402,7 +399,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     producto.setCantidadMinParaAnadirDespensa(Integer.parseInt(editTextCantidadMinMOD.getText().toString()));
                     producto.setTiendaProductoDespensa(editTextTiendaProcedenteMOD.getText().toString());
                     // MODIFICAR
-                    BDConexion.modificacionProducto(producto, new Callback() {
+                    BDConexion.modificarProductoDespensa(producto, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             new Handler(Looper.getMainLooper()).post(() -> {
@@ -417,8 +414,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                                 if (response.code() == 200) {
                                     // modificación realizada correctamente
                                     Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    getContext().startActivity(intent);
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                                    callback.onOperacionCorrectaUpdated(true);
 
                                 } else {
                                     Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();

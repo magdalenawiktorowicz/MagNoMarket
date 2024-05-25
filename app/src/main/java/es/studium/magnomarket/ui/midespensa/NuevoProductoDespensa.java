@@ -1,7 +1,6 @@
 package es.studium.magnomarket.ui.midespensa;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -19,8 +18,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -41,8 +38,6 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -83,7 +78,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     private DatePickerDialog datePickerDialog;
 
     public NuevoProductoDespensa() {
-        // Required empty public constructor
+
     }
 
 
@@ -221,7 +216,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         MainActivity.idUsuario);
                 //Toast.makeText(getContext(), pd.getNombreProductoDespensa() + "\n" + pd.getIdProductoDespensa() + "\n" + pd.getImagenProductoDespensa() + "\n" + pd.getFechaCaducidadProductoDespensa() + "\n" + pd.getCantidadProductoDespensa() + "\n" + pd.getUnidadProductoDespensa() + "\n" + pd.getAutoanadirAListaCompraDespensa() + "\n" + pd.getCantidadMinParaAnadirDespensa() + "\n" + pd.getTiendaProductoDespensa() + "\n" + pd.getIdCategoriaFK(), Toast.LENGTH_LONG).show();
                 // dar de alta
-                BDConexion.altaProductoDespensa(pd, new Callback() {
+                BDConexion.anadirProductoDespensa(pd, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         new Handler(Looper.getMainLooper()).post(() -> {
