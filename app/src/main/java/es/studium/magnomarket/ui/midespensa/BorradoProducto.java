@@ -40,6 +40,8 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == btnNo.getId()) {
             dismiss();
+        } else if (v.getId() == btnSi.getId()) {
+            // ELIMINAR
         }
 
     }

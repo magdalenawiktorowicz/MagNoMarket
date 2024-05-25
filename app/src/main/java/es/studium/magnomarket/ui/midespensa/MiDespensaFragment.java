@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +45,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
 
     // componentes de GUI
     ListView listView;
-    ArrayList<ProductoDespensa> productoDespensas;
+    ArrayList<ProductoDespensa> productosDespensa;
     Spinner spinnerOrdenar;
     ImageButton buttonVistaLista, buttonVistaCategorias;
     FloatingActionButton floatingButtonAdd;
@@ -59,6 +58,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     private String[] storagePermissions;
 
     AdapterListItem adaptador;
+    BorradoProducto borradoProducto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
                              ViewGroup container, Bundle savedInstanceState) {
         MiDespensaViewModel miDespensaViewModel =
                 new ViewModelProvider(this).get(MiDespensaViewModel.class);
-        productoDespensas = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
+        productosDespensa = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
 
         binding = FragmentMiDespensaBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -87,7 +87,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                fragmentModificacionProductoDespensa = new ModificacionProductoDespensa(productoDespensas.get(position));
+                fragmentModificacionProductoDespensa = new ModificacionProductoDespensa(productosDespensa.get(position));
                 fm = getActivity().getSupportFragmentManager();
                 ft = fm.beginTransaction();
                 ft.add(R.id.container, fragmentModificacionProductoDespensa, "modificacionProductoDespensa")
@@ -97,8 +97,18 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                borradoProducto = new BorradoProducto(productosDespensa.get(position));
+                borradoProducto.setCancelable(false);
+                borradoProducto.show(getActivity().getSupportFragmentManager(), "Borrado Producto");
+                return true;
+            }
+        });
+
         // Crear un Adaptador
-        adaptador = new AdapterListItem(getContext(), R.layout.list_item, productoDespensas);
+        adaptador = new AdapterListItem(getContext(), R.layout.list_item, productosDespensa);
         adaptador.notifyDataSetChanged();
         if (checkStoragePermission()) {
             adaptador.notifyDataSetChanged();
@@ -149,11 +159,11 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (spinnerOrdenar.getSelectedItemPosition() == 0) {
             // ordenar los productos alfabéticamente
-            productoDespensas.sort(Comparator.comparing((ProductoDespensa p) -> p.getNombreProductoDespensa().toLowerCase()));
+            productosDespensa.sort(Comparator.comparing((ProductoDespensa p) -> p.getNombreProductoDespensa().toLowerCase()));
             adaptador.notifyDataSetChanged();
         } else if (spinnerOrdenar.getSelectedItemPosition() == 1) {
             // ordenar los productos por la fecha de caducidad
-            productoDespensas.sort(Comparator.comparing((ProductoDespensa p) -> p.getFechaCaducidadProductoDespensa()));
+            productosDespensa.sort(Comparator.comparing((ProductoDespensa p) -> p.getFechaCaducidadProductoDespensa()));
             adaptador.notifyDataSetChanged();
         }
     }
