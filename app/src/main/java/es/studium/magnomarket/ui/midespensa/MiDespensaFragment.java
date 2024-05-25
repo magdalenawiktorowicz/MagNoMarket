@@ -4,11 +4,11 @@ import static es.studium.magnomarket.Login.LoginCredenciales;
 
 import android.Manifest;
 import android.content.Context;
-
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +41,10 @@ import es.studium.magnomarket.databinding.FragmentMiDespensaBinding;
 
 public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+    public interface ProductosDespensaCallback {
+        void onProductosDespensaLoaded(ArrayList<ProductoDespensa> productosDespensa);
+    }
     private FragmentMiDespensaBinding binding;
-
-    // componentes de GUI
     ListView listView;
     ArrayList<ProductoDespensa> productosDespensa;
     Spinner spinnerOrdenar;
@@ -52,7 +53,6 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     SharedPreferences sharedpreferences;
     FragmentManager fm;
     FragmentTransaction ft;
-    //Fragment fragmentNuevoProductoDespensa;
     NuevoProductoDespensa fragmentNuevoProductoDespensa;
     ModificacionProductoDespensa fragmentModificacionProductoDespensa;
     private static final int STORAGE_REQUEST_CODE = 101;
@@ -62,31 +62,51 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     BorradoProducto borradoProducto;
     MiDespensaCallback despensaCallback;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedpreferences = getActivity().getSharedPreferences(LoginCredenciales, Context.MODE_PRIVATE);
-        // si las preferencias compartidas existen
         if (sharedpreferences != null) {
-            // obtener el valor de idUsuario, si no - por defecto el valor de la variable estática idUsuario
             MainActivity.idUsuario = sharedpreferences.getInt("usuarioID", MainActivity.idUsuario);
         }
         storagePermissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-
-
+        productosDespensa = new ArrayList<>(); // Ensure this is initialized here
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         MiDespensaViewModel miDespensaViewModel =
                 new ViewModelProvider(this).get(MiDespensaViewModel.class);
-        productosDespensa = BDConexion.consultarProductosDespensa(MainActivity.idUsuario);
+
         binding = FragmentMiDespensaBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         listView = root.findViewById(R.id.listView);
 
-        // asignar un listener a cada elemento de la lista
+        // Crear un Adaptador
+        adaptador = new AdapterListItem(getContext(), R.layout.list_item, productosDespensa);
+        listView.setAdapter(adaptador);
+
+        // Load products
+        BDConexion.consultarProductosDespensa(MainActivity.idUsuario, new ProductosDespensaCallback() {
+            @Override
+            public void onProductosDespensaLoaded(ArrayList<ProductoDespensa> loadedProductosDespensa) {
+                getActivity().runOnUiThread(() -> {
+                    productosDespensa.clear();
+                    productosDespensa.addAll(loadedProductosDespensa);
+                    adaptador.notifyDataSetChanged();
+                });
+            }
+        });
+
+        despensaCallback = new MiDespensaCallback() {
+            @Override
+            public void onOperacionCorrectaUpdated(boolean operacionCorrecta) {
+                if (operacionCorrecta) {
+                    refreshProductList();
+                }
+            }
+        };
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,31 +123,18 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                borradoProducto = new BorradoProducto(productosDespensa.get(position));
+                borradoProducto = new BorradoProducto(productosDespensa.get(position), despensaCallback);
                 borradoProducto.setCancelable(false);
                 borradoProducto.show(getActivity().getSupportFragmentManager(), "Borrado Producto");
                 return true;
             }
         });
 
-        // Crear un Adaptador
-        adaptador = new AdapterListItem(getContext(), R.layout.list_item, productosDespensa);
-        despensaCallback = new MiDespensaCallback() {
-            @Override
-            public void onOperacionCorrectaUpdated(boolean operacionCorrecta) {
-                if (operacionCorrecta) {
-                    adaptador.notifyDataSetChanged();
-                }
-            }
-        };
-        adaptador.notifyDataSetChanged();
         if (checkStoragePermission()) {
             adaptador.notifyDataSetChanged();
         } else {
             requestStoragePermission();
         }
-        // Asignar el adaptador a nuestro ListView
-        listView.setAdapter(adaptador);
 
         List<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("alfabéticamente");
@@ -158,6 +165,19 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
     private boolean checkStoragePermission() {
         boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result;
+    }
+
+    private void refreshProductList() {
+        BDConexion.consultarProductosDespensa(MainActivity.idUsuario, new ProductosDespensaCallback() {
+            @Override
+            public void onProductosDespensaLoaded(ArrayList<ProductoDespensa> loadedProductosDespensa) {
+                getActivity().runOnUiThread(() -> {
+                    productosDespensa.clear();
+                    productosDespensa.addAll(loadedProductosDespensa);
+                    adaptador.notifyDataSetChanged();
+                });
+            }
+        });
     }
 
     @Override

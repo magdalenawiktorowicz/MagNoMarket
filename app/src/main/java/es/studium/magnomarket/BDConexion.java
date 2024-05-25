@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import es.studium.magnomarket.ui.midespensa.MiDespensaFragment;
 import okhttp3.*;
 
 public class BDConexion {
@@ -76,7 +77,7 @@ public class BDConexion {
     }
 
     // consulta ProductoDespensa
-    public static ArrayList<ProductoDespensa> consultarProductosDespensa(int idUsuario) {
+    public static ArrayList<ProductoDespensa> consultarProductosDespensa(int idUsuario, MiDespensaFragment.ProductosDespensaCallback callback) {
 
         ArrayList<ProductoDespensa> productosDespensa = new ArrayList<>();
 
@@ -112,6 +113,8 @@ public class BDConexion {
 
                             productosDespensa.add(new ProductoDespensa(idProductoDespensa, nombreProductoDespensa, imagenProductoDespensa, fechaCaducidadProductoDespensa, cantidadProductoDespensa, unidadProductoDespensa, autoanadirAListaCompraDespensa, cantidadMinParaAnadirDespensa, tiendaProductoDespensa, idCategoriaFK, idUsuarioFK));
                         }
+                        callback.onProductosDespensaLoaded(productosDespensa);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

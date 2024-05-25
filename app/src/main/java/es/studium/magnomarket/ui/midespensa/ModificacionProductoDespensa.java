@@ -355,7 +355,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             } else if (v.getId() == btnModEliminar.getId()) {
                 // COMPROBAR LOS DATOS
                 if (comprobarDatos(editTextModNombre)) {
-                    borradoProducto = new BorradoProducto(producto);
+                    borradoProducto = new BorradoProducto(producto, callback);
                     borradoProducto.setCancelable(false);
                     borradoProducto.show(getActivity().getSupportFragmentManager(), "Borrado Producto");
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

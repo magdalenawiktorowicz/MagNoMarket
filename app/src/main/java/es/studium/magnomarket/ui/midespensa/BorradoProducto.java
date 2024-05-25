@@ -26,9 +26,11 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
     private TextView mensajeConfirmacion;
     private Button btnSi;
     private Button btnNo;
+    private MiDespensaCallback callback;
 
-    public BorradoProducto(ProductoDespensa pr) {
+    public BorradoProducto(ProductoDespensa pr, MiDespensaCallback callback) {
         this.producto = pr;
+        this.callback = callback;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
                             // borrado realizado correctamente
                             Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
                             dismiss();
+                            callback.onOperacionCorrectaUpdated(true);
                         } else {
                             Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
                             dismiss();
