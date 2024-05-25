@@ -93,6 +93,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
     private String[] storagePermissions;
     private DatePickerDialog datePickerDialog;
 
+    BorradoProducto borradoProducto;
+
 
     public ModificacionProductoDespensa(ProductoDespensa productoDespensa) {
         this.producto = productoDespensa;
@@ -353,6 +355,11 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 // HIDE THE BOTTOM SHEET
             } else if (v.getId() == btnModEliminar.getId()) {
                 // COMPROBAR LOS DATOS
+                if (comprobarDatos(editTextModNombre)) {
+                    borradoProducto = new BorradoProducto(producto);
+                    borradoProducto.setCancelable(false);
+                    borradoProducto.show(getActivity().getSupportFragmentManager(), "Borrado Producto");
+                }
                 // ELIMINAR
                 // INFORMAR SOBRE EL RESULTADO
                 // HIDE THE BOTTOM SHEET - check if its updated

@@ -41,5 +41,6 @@
     <string name="cancelar">Cancelar</string>
     <string name="spinnerPrompt">Selecciona la categoría...</string>
     <string name="eliminar">Eliminar</string>
+    <string name="mensajeConfirmacionBorradoProducto">"¿Estás seguro/a de que quieres eliminar el producto: "</string>
 
 </resources>
