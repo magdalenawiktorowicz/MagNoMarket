@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -174,6 +175,10 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
                 getActivity().runOnUiThread(() -> {
                     productosDespensa.clear();
                     productosDespensa.addAll(loadedProductosDespensa);
+                    if (spinnerOrdenar.getSelectedItemPosition() == 1) {
+                        // ordenar los productos por la fecha de caducidad
+                        productosDespensa.sort(Comparator.comparing((ProductoDespensa p) -> p.getFechaCaducidadProductoDespensa()));
+                    }
                     adaptador.notifyDataSetChanged();
                 });
             }

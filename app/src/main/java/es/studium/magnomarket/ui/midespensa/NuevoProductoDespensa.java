@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -88,6 +89,15 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         categorias = BDConexion.consultarCategorias();
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        };
+        getActivity().getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
     }
 
     @Override
@@ -397,4 +407,5 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
+
 }
