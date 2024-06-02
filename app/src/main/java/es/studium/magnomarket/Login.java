@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.Manifest;
@@ -58,6 +59,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             finish(); // deshabilitar el botón back
         } else {
             setContentView(R.layout.activity_login); // establecer la pantalla de login
+            assignBackgroundGradient();
             editTextUsuario = findViewById(R.id.correoElectronico);
             editTextClave = findViewById(R.id.contrasena);
             switchGuardarCredenciales = findViewById(R.id.switchSaveCredentials);
@@ -188,5 +190,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(this, "Por favor, introduce usuario y contraseña", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void assignBackgroundGradient() {
+        GradientDrawable gradient = new GradientDrawable();
+        gradient.setColors(
+                new int[] {
+                        getResources().getColor(R.color.azul_claro),
+                        getResources().getColor(R.color.white)
+                }
+        );
+        gradient.setOrientation(
+                GradientDrawable.Orientation.BOTTOM_TOP
+        );
+        gradient.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+        gradient.setShape(GradientDrawable.RECTANGLE);
+
+        findViewById(R.id.login).setBackground(gradient);
     }
 }
