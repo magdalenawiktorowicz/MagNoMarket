@@ -18,9 +18,11 @@
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:paddingLeft="4dp"
         android:text="TextView"
         android:textAlignment="textStart"
-        android:textColor="#333" />
+        android:textAppearance="@style/TextView"
+        android:textColor="@color/dark_blue" />
 
     <ImageView
         android:id="@+id/imageView3"
