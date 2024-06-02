@@ -22,7 +22,7 @@
 
     <EditText
         android:id="@+id/contrasena"
-        style="@style/HintText"
+        style="@style/Login"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:autofillHints="@string/prompt_contrasena"
@@ -77,12 +77,13 @@
 
     <EditText
         android:id="@+id/correoElectronico"
-        style="@style/HintText"
+        style="@style/Login"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:autofillHints="@string/prompt_correo"
         android:hint="@string/prompt_correo"
         android:selectAllOnFocus="true"
+        android:textAppearance="@style/TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.475"

@@ -16,7 +16,7 @@
 
     <string name="nuevoProducto">Nuevo Producto</string>
     <string name="producto">Producto:</string>
-    <string name="nombreProductoPlaceholder">Nombre del producto...</string>
+    <string name="nombreProductoPlaceholder">Nombre de producto…</string>
     <string name="categoria">Categoría:</string>
     <string name="sinCategoria">Sin categoría</string>
     <string name="cantidad">Cantidad:</string>
@@ -35,11 +35,11 @@
     <string name="no">No</string>
     <string name="cantidadMinima">Cantidad mínima:</string>
     <string name="tiendaProcedente">Tienda procedente:</string>
-    <string name="nombreTiendaPlaceholder">Nombre de la tienda...</string>
+    <string name="nombreTiendaPlaceholder">Nombre de tienda…</string>
     <string name="aceptar">Aceptar</string>
     <string name="anadirALaListaCompra">Añadir a la lista de compra</string>
     <string name="cancelar">Cancelar</string>
-    <string name="spinnerPrompt">Selecciona la categoría...</string>
+    <string name="spinnerPrompt">Elige la categoría…</string>
     <string name="eliminar">Eliminar</string>
     <string name="mensajeConfirmacionBorradoProducto">"¿Estás seguro/a de que quieres eliminar el producto: "</string>
 
