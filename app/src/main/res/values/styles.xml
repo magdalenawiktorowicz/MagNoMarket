@@ -35,4 +35,11 @@
         <item name="android:shadowColor">@color/orange</item>
         <item name="android:shadowRadius">20</item>
     </style>
+    <style name="NavView" parent="Theme.AppCompat.Light">
+        <item name="itemIconTint">@color/nav_colors</item>
+        <item name="itemTextColor">@color/nav_colors</item>
+        <item name="android:shadowColor">@color/dark_blue</item>
+        <item name="android:shadowRadius">3</item>
+        <item name="android:textSize">13sp</item>
+    </style>
 </resources>

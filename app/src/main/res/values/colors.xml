@@ -14,6 +14,7 @@
     <color name="light_grey">#AFAFAF</color>
     <color name="verde" tools:ignore="MissingDefaultResource">#5B9324</color>
     <color name="dark_blue">#022632</color>
+    <color name="dark_blue_2">#3E022632</color>
     <color name="dark_blue_lighter">#083B4C</color>
 
     <color name="oscuro">#004219</color>
