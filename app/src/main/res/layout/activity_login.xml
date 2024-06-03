@@ -57,11 +57,14 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchSaveCredentials"
+        style="@style/CustomizedSwitch"
         android:layout_width="220dp"
         android:layout_height="50dp"
         android:checked="false"
         android:text="@string/switchSaveCredentials"
-        android:textColor="@color/grey"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextView"
+        android:textColor="@color/dark_blue_lighter_seethrough"
         android:textSize="15sp"
         android:textStyle="bold"
         android:theme="@style/CustomizedSwitch"

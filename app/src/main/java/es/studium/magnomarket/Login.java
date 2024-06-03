@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,9 +15,11 @@ import android.os.Bundle;
 import android.Manifest;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
@@ -41,6 +40,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     SharedPreferences sharedpreferences;
     String usuarioInput;
     String contrasenaInput;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,15 +122,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 performLogin(usuarioInput, contrasenaInput, idUsuario);
                             } else {
                                 // credenciales incorrectas
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                                builder.setMessage("Credenciales incorrectas")
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                toast = Toast.makeText(getApplication(), R.string.credenciales_incorrectas, Toast.LENGTH_SHORT);
+                                View toastView = toast.getView();
+                                TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+                                toastMessage.setTextAppearance(R.style.ToastStyle);
+                                toastView.setBackground(getResources().getDrawable(R.drawable.dialog_background));
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
                             }
                         } catch (Exception e) {
                         }
@@ -151,7 +149,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 comprobarCredenciales();
             } else {
                 // caso negativo
-                Toast.makeText(this, "Internet permission denied", Toast.LENGTH_SHORT).show();
+                toast = Toast.makeText(this, "Internet permission denied", Toast.LENGTH_SHORT);
+                View toastView = toast.getView();
+                TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+                toastMessage.setTextAppearance(R.style.ToastStyle);
+                toastView.setBackground(getResources().getDrawable(R.drawable.dialog_background));
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         }
     }
@@ -187,7 +191,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             if (!usuarioInput.isEmpty() && !contrasenaInput.isEmpty()) {
                 comprobarCredenciales();
             } else {
-                Toast.makeText(this, "Por favor, introduce usuario y contraseña", Toast.LENGTH_SHORT).show();
+                toast = Toast.makeText(this, "Por favor, introduce usuario y contraseña", Toast.LENGTH_SHORT);
+                View toastView = toast.getView();
+                TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+                toastMessage.setTextAppearance(R.style.ToastStyle);
+                toastView.setBackground(getResources().getDrawable(R.drawable.dialog_background));
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         }
     }

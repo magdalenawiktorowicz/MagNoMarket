@@ -8,7 +8,7 @@
     <string name="prompt_contrasena" translatable="false">Contraseña</string>
     <string name="switchSaveCredentials" translatable="false">Guardar las credenciales</string>
     <string name="btnAcceder" translatable="false">Acceder</string>
-
+    <string name="credenciales_incorrectas">Credenciales incorrectas</string>
     <string name="borrarCredenciales" translatable="false">Borrar las credenciales</string>
     <string name="credencialesBorradas" translatable="false">Credenciales borradas</string>
 
