@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 import java.io.IOException;
 import es.studium.magnomarket.BDConexion;
-import es.studium.magnomarket.MainActivity;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
 import okhttp3.Call;
@@ -37,7 +36,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomDialog);
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_borrado_producto, null);
-        builder.setTitle("Borrado Producto: " + producto.getNombreProductoDespensa()).setView(dialogView);
+        builder.setView(dialogView);
         btnSi = dialogView.findViewById(R.id.btnSiBorradoProducto);
         btnSi.setOnClickListener(this);
         btnNo = dialogView.findViewById(R.id.btnNoBorradoProducto);
