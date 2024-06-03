@@ -1,0 +1,27 @@
+<!-- res/drawable/dialog_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Border layer -->
+    <item>
+        <shape android:height="175dp" android:width="340dp"  android:shape="rectangle">
+            <stroke android:width="3dp" android:color="@color/orange"/>
+            <corners android:radius="16dp"/>
+        </shape>
+    </item>
+
+    <!-- Background image layer with rounded corners -->
+    <item android:top="2dp" android:bottom="2dp" android:left="2dp" android:right="2dp">
+        <shape android:height="175dp" android:width="340dp" android:shape="rectangle">
+            <corners android:radius="16dp"/>
+            <gradient
+                android:startColor="@color/azul_claro"
+                android:endColor="@color/white"
+                android:angle="90" />
+        </shape>
+    </item>
+
+</layer-list>
+
+
+
+

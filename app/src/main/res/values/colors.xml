@@ -24,8 +24,8 @@
     <color name="azul_claro">#A3C1D3</color>
     <color name="blue">#448AFF</color>
 
-    <color name="expired">#CD8585</color>
-    <color name="about_to_expire">#DFC37C</color>
-    <color name="good">#B2DFA6</color>
+    <color name="expired">#A3CD8585</color>
+    <color name="about_to_expire">#A3DFC37C</color>
+    <color name="good">#A3B2DFA6</color>
 
 </resources>

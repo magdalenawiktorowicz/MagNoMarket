@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,16 +35,15 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomDialog);
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_borrado_producto, null);
         builder.setTitle("Borrado Producto: " + producto.getNombreProductoDespensa()).setView(dialogView);
-
         btnSi = dialogView.findViewById(R.id.btnSiBorradoProducto);
         btnSi.setOnClickListener(this);
         btnNo = dialogView.findViewById(R.id.btnNoBorradoProducto);
         btnNo.setOnClickListener(this);
         mensajeConfirmacion = dialogView.findViewById(R.id.textViewConfirmacionBorrado);
-        mensajeConfirmacion.setText(mensajeConfirmacion.getText() + " " + producto.getNombreProductoDespensa() + "?");
+        mensajeConfirmacion.setText((Html.fromHtml(mensajeConfirmacion.getText() + " <b>" + producto.getNombreProductoDespensa() + "</b>?")));
         return builder.create();
     }
 

@@ -14,13 +14,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/see_through"
-        app:behavior_peekHeight="290dp"
+        app:behavior_peekHeight="300dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/partial_content"
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="303dp"
             android:layout_gravity="bottom"
             android:background="@drawable/rounded"
             android:visibility="visible">
@@ -212,14 +212,14 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:scaleX="1.5"
-                app:tint="@color/dark_blue_lighter_seethrough"
                 android:src="@drawable/drag"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.03" />
+                app:layout_constraintVertical_bias="0.032"
+                app:tint="@color/dark_blue_lighter_seethrough" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
