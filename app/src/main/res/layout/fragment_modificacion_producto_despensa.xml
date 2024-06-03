@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="@color/see_through"
         app:behavior_peekHeight="290dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -206,6 +206,7 @@
             android:id="@+id/full_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/background"
             android:visibility="gone">
 
             <ImageView
