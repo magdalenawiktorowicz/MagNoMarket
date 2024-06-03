@@ -82,8 +82,11 @@
         android:cropToPadding="false"
         android:outlineAmbientShadowColor="#061432"
         android:outlineSpotShadowColor="#0B0E25"
-        app:backgroundTint="@color/azul_claro"
+        app:backgroundTint="@color/dark_blue_lighter"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
         app:fabSize="normal"
+        app:hoveredFocusedTranslationZ="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.954"
@@ -91,6 +94,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.835"
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/baseline_add_24" />
+        app:pressedTranslationZ="0dp"
+        app:srcCompat="@drawable/add_white"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
