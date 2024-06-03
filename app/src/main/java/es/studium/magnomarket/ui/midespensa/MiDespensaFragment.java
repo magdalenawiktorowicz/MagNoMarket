@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,7 +69,7 @@ public class MiDespensaFragment extends Fragment implements AdapterView.OnItemSe
             MainActivity.idUsuario = sharedpreferences.getInt("usuarioID", MainActivity.idUsuario);
         }
         storagePermissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-        productosDespensa = new ArrayList<>(); // Ensure this is initialized here
+        productosDespensa = new ArrayList<>();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

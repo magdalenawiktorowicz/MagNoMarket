@@ -18,11 +18,11 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +38,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -77,9 +78,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     private String[] cameraPermissions;
     private String[] storagePermissions;
     private DatePickerDialog datePickerDialog;
+    Toast toast;
 
     public NuevoProductoDespensa() {
-
     }
 
 
@@ -230,13 +231,13 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         editTextTiendaProcedente.getText().toString(),
                         spinnerCategorias.getSelectedItemPosition(),
                         MainActivity.idUsuario);
-                //Toast.makeText(getContext(), pd.getNombreProductoDespensa() + "\n" + pd.getIdProductoDespensa() + "\n" + pd.getImagenProductoDespensa() + "\n" + pd.getFechaCaducidadProductoDespensa() + "\n" + pd.getCantidadProductoDespensa() + "\n" + pd.getUnidadProductoDespensa() + "\n" + pd.getAutoanadirAListaCompraDespensa() + "\n" + pd.getCantidadMinParaAnadirDespensa() + "\n" + pd.getTiendaProductoDespensa() + "\n" + pd.getIdCategoriaFK(), Toast.LENGTH_LONG).show();
                 // dar de alta
                 BDConexion.anadirProductoDespensa(pd, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                            toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                            makeToast();
                         });
                     }
 
@@ -245,41 +246,23 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         new Handler(Looper.getMainLooper()).post(() -> {
                             if (response.code() == 200) {
                                 // alta realizada correctamente
-                                Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                                toast = Toast.makeText(getContext(), R.string.operacion_realizada, Toast.LENGTH_SHORT);
+                                makeToast();
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 getContext().startActivity(intent);
                             } else {
-                                Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
-                            }
+                                toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                                makeToast();                            }
                         });
                     }
                 });
             } else {
-                // indicar que los datos no están correctos
-                Toast.makeText(getContext(), "Introduce el nombre del producto y selecciona la categoría.", Toast.LENGTH_SHORT).show();
-            }
+                // falta datos a rellenar
+                toast = Toast.makeText(getContext(), R.string.toast_falta_nombre_categoria_producto, Toast.LENGTH_SHORT);
+                makeToast();            }
 
         } else if (v.getId() == btnAnadirListaCompra.getId()) {
-//            // comprobar los datos
-//            if (comprobarDatos()) {
-//                int autoAnadirListaCompra = switchAnadirAuto.isChecked() ? 1 : 0;
-//                // crear un ProductoDespensa instance
-//                ProductoDespensa pd = new ProductoDespensa(
-//                        editTextNombreProducto.getText().toString(),
-//                        String.valueOf(imageUri),
-//                        btnFechaCaducidad.getText().toString(),
-//                        Integer.parseInt(editTextCantidad.getText().toString()),
-//                        spinnerUnidades.getSelectedItem().toString(),
-//                        autoAnadirListaCompra,
-//                        Integer.parseInt(editTextCantidadMin.getText().toString()),
-//                        editTextTiendaProcedente.getText().toString(),
-//                        spinnerCategorias.getSelectedItemPosition(),
-//                        MainActivity.idUsuario);
-//                // añadir a la lista de compra
-//
-//                // indicar si se ha realizado correctamente o no
-//            }
-
+            // to do
         } else if (v.getId() == btnCancelar.getId()) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
@@ -340,11 +323,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                 public void onActivityResult(ActivityResult result) {
                     // receive the image, if picked
                     if (result.getResultCode() == Activity.RESULT_OK) {
-
                         // image picked
                         imageUri = result.getData().getData();
                         // change the imageButton to that image
-                        Toast.makeText(getContext(), "image picked", Toast.LENGTH_SHORT).show();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                             nuevoProductoPhoto.setImageBitmap(bitmap);
@@ -375,7 +356,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                     // receive the image, if taken
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // change the imageButton to the captured image
-                        Toast.makeText(getContext(), "imageTaken: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                             nuevoProductoPhoto.setImageBitmap(bitmap);
@@ -414,4 +394,12 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
+    private void makeToast() {
+        View toastView = toast.getView();
+        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+        toastMessage.setTextAppearance(R.style.ToastStyle);
+        toastView.setBackground(getResources().getDrawable(R.drawable.dialog_background));
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 }

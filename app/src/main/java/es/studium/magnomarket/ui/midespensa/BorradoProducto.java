@@ -2,11 +2,11 @@ package es.studium.magnomarket.ui.midespensa;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +27,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
     private Button btnSi;
     private Button btnNo;
     private MiDespensaCallback callback;
+    Toast toast;
 
     public BorradoProducto(ProductoDespensa pr, MiDespensaCallback callback) {
         this.producto = pr;
@@ -55,7 +56,8 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
                 @Override
                 public void onFailure(Call call, IOException e) {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                        toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                        makeToast();
                         dismiss();
                     });
                 }
@@ -65,11 +67,13 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
                     new Handler(Looper.getMainLooper()).post(() -> {
                         if (response.code() == 200) {
                             // borrado realizado correctamente
-                            Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                            toast = Toast.makeText(getContext(), R.string.operacion_realizada, Toast.LENGTH_SHORT);
+                            makeToast();
                             dismiss();
                             callback.onOperacionCorrectaUpdated(true);
                         } else {
-                            Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                            toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                            makeToast();
                             dismiss();
                         }
                     });
@@ -77,5 +81,14 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
             });
         }
 
+    }
+
+    private void makeToast() {
+        View toastView = toast.getView();
+        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+        toastMessage.setTextAppearance(R.style.ToastStyle);
+        toastView.setBackground(getResources().getDrawable(R.drawable.dialog_background));
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }

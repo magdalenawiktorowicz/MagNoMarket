@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">MagNo Market</string>
     <string name="title_mi_cuenta" translatable="false">Mi Cuenta</string>
     <string name="title_lista_de_compra" translatable="false">Lista de Compra</string>
@@ -8,11 +8,11 @@
     <string name="prompt_contrasena" translatable="false">Contraseña</string>
     <string name="switchSaveCredentials" translatable="false">Guardar las credenciales</string>
     <string name="btnAcceder" translatable="false">Acceder</string>
-    <string name="credenciales_incorrectas">Credenciales incorrectas</string>
+    <string name="credenciales_incorrectas" translatable="false">Credenciales incorrectas</string>
     <string name="borrarCredenciales" translatable="false">Borrar las credenciales</string>
     <string name="credencialesBorradas" translatable="false">Credenciales borradas</string>
 
-    <string name="ordenar">Ordenar:</string>
+    <string name="ordenar" translatable="false">Ordenar:</string>
 
     <string name="nuevoProducto">Nuevo Producto</string>
     <string name="producto">Producto:</string>
@@ -44,4 +44,10 @@
     <string name="mensajeConfirmacionBorradoProducto">"¿Estás seguro/a de que quieres eliminar el producto: "</string>
     <string name="alta_producto_despensa_titulo">Nuevo Producto</string>
     <string name="modificacion_producto_despensa_titulo">Modificación</string>
+    <string name="toast_falta_credenciales" tools:ignore="ExtraTranslation">Por favor, introduce usuario y contraseña</string>
+    <string name="internet_permission_denied" tools:ignore="ExtraTranslation">Acceso a internet no permitido</string>
+    <string name="operacion_no_realizada" tools:ignore="ExtraTranslation">Error: la operación no se ha realizado.</string>
+    <string name="operacion_realizada" tools:ignore="ExtraTranslation">La operación se ha realizado correctamente.</string>
+    <string name="toast_falta_nombre_producto" tools:ignore="ExtraTranslation">Introduce el nombre del producto.</string>
+    <string name="toast_falta_nombre_categoria_producto" tools:ignore="ExtraTranslation">Introduce el nombre del producto y selecciona la categoría.</string>
 </resources>

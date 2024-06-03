@@ -149,7 +149,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 comprobarCredenciales();
             } else {
                 // caso negativo
-                toast = Toast.makeText(this, "Internet permission denied", Toast.LENGTH_SHORT);
+                toast = Toast.makeText(this, R.string.internet_permission_denied, Toast.LENGTH_SHORT);
                 View toastView = toast.getView();
                 TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
                 toastMessage.setTextAppearance(R.style.ToastStyle);
@@ -191,7 +191,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             if (!usuarioInput.isEmpty() && !contrasenaInput.isEmpty()) {
                 comprobarCredenciales();
             } else {
-                toast = Toast.makeText(this, "Por favor, introduce usuario y contraseña", Toast.LENGTH_SHORT);
+                toast = Toast.makeText(this, R.string.toast_falta_credenciales, Toast.LENGTH_SHORT);
                 View toastView = toast.getView();
                 TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
                 toastMessage.setTextAppearance(R.style.ToastStyle);

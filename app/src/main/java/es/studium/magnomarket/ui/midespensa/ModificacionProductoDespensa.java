@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -94,6 +96,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
     private DatePickerDialog datePickerDialog;
     BorradoProducto borradoProducto;
     private MiDespensaCallback callback;
+    Toast toast;
 
     public ModificacionProductoDespensa(ProductoDespensa productoDespensa, MiDespensaCallback callback) {
         this.producto = productoDespensa;
@@ -348,7 +351,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                         @Override
                         public void onFailure(Call call, IOException e) {
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                                makeToast();
                                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                             });
                         }
@@ -358,24 +362,24 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 if (response.code() == 200) {
                                     // alta realizada correctamente
-                                    Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                                    toast = Toast.makeText(getContext(), R.string.operacion_realizada, Toast.LENGTH_SHORT);
+                                    makeToast();
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                                     callback.onOperacionCorrectaUpdated(true);
                                 } else {
-                                    Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                    toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                                    makeToast();
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                                 }
                             });
                         }
                     });
                 } else {
-                    Toast.makeText(getContext(), "Introduce el nombre del producto.", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(getContext(), R.string.toast_falta_nombre_producto, Toast.LENGTH_SHORT);
+                    makeToast();
                 }
             } else if (v.getId() == btnModAnadirListaCompra.getId()) {
-                // COMPROBAR LOS DATOS
-                // AÑADIR A LA LISTA DE COMPRA
-                // PREGUNTAR SOBRE LA CANTIDAD????
-                // HIDE THE BOTTOM SHEET
+                // to do
             } else if (v.getId() == btnModEliminar.getId()) {
                 // COMPROBAR LOS DATOS
                 if (comprobarDatos(editTextModNombre)) {
@@ -412,7 +416,6 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 if (comprobarDatos(editTextModNombreProductoMOD, spinnerCategoriasMOD)) {
                     int autoAnadirListaCompra = switchAnadirAutoMOD.isChecked() ? 1 : 0;
                     producto.setNombreProductoDespensa(editTextModNombreProductoMOD.getText().toString());
-                    //producto.setImagenProductoDespensa(String.valueOf(Uri.parse(productoPhotoMOD.toString())));
                     producto.setIdCategoriaFK(spinnerCategoriasMOD.getSelectedItemPosition());
                     producto.setCantidadProductoDespensa(Integer.parseInt(editTextCantidadMOD.getText().toString()));
                     producto.setUnidadProductoDespensa(spinnerUnidadesMOD.getSelectedItem().toString());
@@ -427,7 +430,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                         @Override
                         public void onFailure(Call call, IOException e) {
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                                makeToast();
                                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                             });
                         }
@@ -437,25 +441,25 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 if (response.code() == 200) {
                                     // modificación realizada correctamente
-                                    Toast.makeText(getContext(), "La operación se ha realizado correctamente.", Toast.LENGTH_SHORT).show();
+                                    toast = Toast.makeText(getContext(), R.string.operacion_realizada, Toast.LENGTH_SHORT);
+                                    makeToast();
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                                     callback.onOperacionCorrectaUpdated(true);
 
                                 } else {
-                                    Toast.makeText(getContext(), "Error: la operación no se ha realizado.", Toast.LENGTH_SHORT).show();
+                                    toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
+                                    makeToast();
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                                 }
                             });
                         }
                     });
                 } else {
-                    Toast.makeText(getContext(), "Introduce el nombre del producto y selecciona la categoría.", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(getContext(), R.string.toast_falta_nombre_categoria_producto, Toast.LENGTH_SHORT);
+                    makeToast();
                 }
             } else if (v.getId() == btnAnadirListaCompraMOD.getId()) {
-                // COMPROBAR LOS DATOS
-                // AÑADIR A LA LISTA DE COMPRA
-                // PREGUNTAR SOBRE LA CANTIDAD????
-                // HIDE THE BOTTOM SHEET
+                // to do
             } else if (v.getId() == btnCancelarMOD.getId()) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
@@ -520,8 +524,6 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                         // image picked
                         imageUri = result.getData().getData();
                         producto.setImagenProductoDespensa(String.valueOf(imageUri));
-                        // change the imageButton to that image
-                        Toast.makeText(getContext(), "image picked", Toast.LENGTH_SHORT).show();
                         if (imageUri.toString() != null && !imageUri.toString().equals("null") && !imageUri.toString().isBlank()) {
                             Glide.with(getContext())
                                     .load(imageUri)
@@ -555,7 +557,6 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     // receive the image, if taken
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // change the imageButton to the captured image
-                        Toast.makeText(getContext(), "imageTaken: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
                         producto.setImagenProductoDespensa(String.valueOf(imageUri));
                         if (imageUri.toString() != null && !imageUri.toString().equals("null") && !imageUri.toString().isBlank()) {
                             Glide.with(getContext())
@@ -596,5 +597,14 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    private void makeToast() {
+        View toastView = toast.getView();
+        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+        toastMessage.setTextAppearance(R.style.ToastStyle);
+        toastView.setBackground(getResources().getDrawable(R.drawable.dialog_background));
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
