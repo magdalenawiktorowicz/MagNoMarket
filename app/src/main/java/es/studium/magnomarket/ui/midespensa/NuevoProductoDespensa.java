@@ -150,6 +150,12 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         btnCancelar = view.findViewById(R.id.btnCancelar);
         btnCancelar.setOnClickListener(this);
 
+        // establecer el título en la barra superior
+        if (getActivity() != null) {
+            // establecer el título de la barra superior
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.alta_producto_despensa_titulo);
+        }
+
         return view;
     }
 

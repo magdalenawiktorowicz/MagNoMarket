@@ -237,15 +237,29 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     ((MainActivity) getActivity()).hideBottomNavigationView();
                     fullContent.setVisibility(View.VISIBLE);
                     partialContent.setVisibility(View.GONE);
+                    // establecer el título en la barra superior
+                    if (getActivity() != null) {
+                        // establecer el título de la barra superior
+                        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.modificacion_producto_despensa_titulo);
+                    }
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     // When bottom sheet is collapsed or hidden
                     ((MainActivity) getActivity()).hideBottomNavigationView();
                     fullContent.setVisibility(View.GONE);
                     partialContent.setVisibility(View.VISIBLE);
-
+                    // establecer el título en la barra superior
+                    if (getActivity() != null) {
+                        // establecer el título de la barra superior
+                        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_mi_despensa);
+                    }
                 } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     fm.popBackStack();
+                    // establecer el título en la barra superior
+                    if (getActivity() != null) {
+                        // establecer el título de la barra superior
+                        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_mi_despensa);
+                    }
                 }
             }
 

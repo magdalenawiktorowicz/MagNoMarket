@@ -42,5 +42,6 @@
     <string name="spinnerPrompt">Elige la categoría…</string>
     <string name="eliminar">Eliminar</string>
     <string name="mensajeConfirmacionBorradoProducto">"¿Estás seguro/a de que quieres eliminar el producto: "</string>
-
+    <string name="alta_producto_despensa_titulo">Nuevo Producto</string>
+    <string name="modificacion_producto_despensa_titulo">Modificación</string>
 </resources>
