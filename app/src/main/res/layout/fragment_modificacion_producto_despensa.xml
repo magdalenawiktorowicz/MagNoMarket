@@ -27,11 +27,13 @@
 
             <EditText
                 android:id="@+id/editTextModNombre"
+                style="@style/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
                 android:text="Name"
+                android:textAppearance="@style/HintText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
@@ -44,17 +46,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cantidad"
+                android:textAppearance="@style/Text_style"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.088"
+                app:layout_constraintHorizontal_bias="0.181"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.324" />
+                app:layout_constraintVertical_bias="0.317" />
 
             <ImageButton
                 android:id="@+id/imageButtonModCantidadMinus"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:backgroundTint="@color/see_through"
                 android:src="@drawable/baseline_remove_circle_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +85,7 @@
                 android:id="@+id/imageButtonModCantidadPlus"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:backgroundTint="@color/see_through"
                 android:src="@drawable/baseline_add_circle_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,11 +99,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/unidad"
+                android:textAppearance="@style/Text_style"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.511"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.321" />
+                app:layout_constraintVertical_bias="0.32" />
 
             <Spinner
                 android:id="@+id/spinnerModUnidades"
@@ -117,6 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fechaCaducidad"
+                android:textAppearance="@style/Text_style"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -126,6 +137,7 @@
 
             <Button
                 android:id="@+id/btnModFechaCaducidad"
+                style="@style/Button.Date"
                 android:layout_width="180dp"
                 android:layout_height="45dp"
                 android:backgroundTint="@color/azul_claro"
@@ -133,6 +145,7 @@
                 android:hint="@string/fechaPlaceholder"
                 android:inputType="date"
                 android:textAlignment="center"
+                android:textAppearance="@style/Text_style"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
@@ -142,9 +155,11 @@
 
             <Button
                 android:id="@+id/btnModAceptar"
+                style="@style/Button"
                 android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_height="57dp"
                 android:text="@string/aceptar"
+                android:textAppearance="@style/TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -154,10 +169,13 @@
 
             <Button
                 android:id="@+id/btnModAnadirListaCompra"
+                style="@style/Button.Anadir_lista_compra"
                 android:layout_width="147dp"
-                android:layout_height="50dp"
+                android:layout_height="57dp"
+                android:paddingVertical="1dp"
                 android:text="@string/anadirALaListaCompra"
-                android:textSize="11dp"
+                android:textAppearance="@style/TextView"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -166,9 +184,11 @@
 
             <Button
                 android:id="@+id/btnModEliminar"
+                style="@style/Button"
                 android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_height="57dp"
                 android:text="@string/eliminar"
+                android:textAppearance="@style/TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -192,6 +212,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:scaleX="1.5"
+                app:tint="@color/dark_blue_lighter_seethrough"
                 android:src="@drawable/drag"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -500,6 +521,7 @@
                 android:layout_width="135dp"
                 android:layout_height="75dp"
                 android:text="@string/aceptar"
+                android:textAppearance="@style/TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnAnadirListaCompraMOD"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -513,6 +535,7 @@
                 android:layout_width="135dp"
                 android:layout_height="75dp"
                 android:text="@string/anadirALaListaCompra"
+                android:textAppearance="@style/TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -525,6 +548,7 @@
                 android:layout_width="135dp"
                 android:layout_height="75dp"
                 android:text="@string/cancelar"
+                android:textAppearance="@style/TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.944"
