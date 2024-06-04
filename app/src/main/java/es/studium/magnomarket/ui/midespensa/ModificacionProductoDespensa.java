@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -21,7 +20,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -44,17 +42,14 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import es.studium.magnomarket.BDConexion;
 import es.studium.magnomarket.Categoria;
 import es.studium.magnomarket.MainActivity;
@@ -69,7 +64,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
 
     private BottomSheetBehavior<LinearLayout> bottomSheetBehavior;
     private ConstraintLayout partialContent, fullContent;
-
+    // contador de los fragmentos abiertos para controlar la visibilidad del menú de navegación
     private static int fragmentCount = 0;
     ArrayList<Categoria> categorias;
 
@@ -111,6 +106,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+        // eliminar la instancia del fragmento al pulsar el botón de atrás
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -125,6 +121,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_modificacion_producto_despensa, container, false);
+        // ocultar el menú de navegación
         ((MainActivity) getActivity()).hideBottomNavigationView();
         LinearLayout bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -134,15 +131,16 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
 
         // componentes de partialContent:
         editTextModNombre = view.findViewById(R.id.editTextModNombre);
-        editTextModNombre.setText(producto.getNombreProductoDespensa());
+        editTextModNombre.setText(producto.getNombreProductoDespensa()); // mostrar el nombre del producto seleccionado
         editTextModCantidad = view.findViewById(R.id.editTextModCantidad);
-        editTextModCantidad.setText(String.valueOf(producto.getCantidadProductoDespensa()));
+        editTextModCantidad.setText(String.valueOf(producto.getCantidadProductoDespensa())); // mostrar la cantidad del producto seleccionado
         imageButtonModCantidadMinus = view.findViewById(R.id.imageButtonModCantidadMinus);
         imageButtonModCantidadMinus.setOnClickListener(this);
         imageButtonModCantidadPlus = view.findViewById(R.id.imageButtonModCantidadPlus);
         imageButtonModCantidadPlus.setOnClickListener(this);
         spinnerModUnidades = view.findViewById(R.id.spinnerModUnidades);
         SpinnerAdapter adapterUnidades = spinnerModUnidades.getAdapter();
+        // establecer la unidad del producto seleccionado
         int pos = -1;
         for (int i = 0; i < adapterUnidades.getCount(); i++) {
             if (adapterUnidades.getItem(i).toString().equals(producto.getUnidadProductoDespensa())) {
@@ -150,9 +148,11 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 break;
             }
         }
+        // mostrar esta unidad en el spinner
         spinnerModUnidades.setSelection(pos);
         btnModFechaCaducidad = view.findViewById(R.id.btnModFechaCaducidad);
         btnModFechaCaducidad.setOnClickListener(this);
+        // mostrar la fecha de caducidad del producto seleccionado
         btnModFechaCaducidad.setText(producto.getFechaCaducidadProductoDespensa().format(DateTimeFormatter.ofPattern("d/M/yyyy")));
         btnModAceptar = view.findViewById(R.id.btnModAceptar);
         btnModAceptar.setOnClickListener(this);
@@ -165,6 +165,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         productoPhotoMOD = view.findViewById(R.id.productoPhotoMOD);
         productoPhotoMOD.setOnClickListener(this);
         String imageUrl = producto.getImagenProductoDespensa();
+        // mostrar la imagen del producto seleccionado
         if (imageUrl != null && !imageUrl.equals("null") && !imageUrl.isBlank()) {
             Glide.with(getContext())
                     .load(Uri.parse(imageUrl))
@@ -175,13 +176,13 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             productoPhotoMOD.setImageResource(R.drawable.baseline_add_a_photo_24);
         }
         editTextModNombreProductoMOD = view.findViewById(R.id.editTextModNombreProductoMOD);
-        editTextModNombreProductoMOD.setText(producto.getNombreProductoDespensa());
+        editTextModNombreProductoMOD.setText(producto.getNombreProductoDespensa()); // mostrar el nombre del producto seleccionado
         editTextCantidadMinMOD = view.findViewById(R.id.editTextCantidadMinMOD);
-        editTextCantidadMinMOD.setText(String.valueOf(producto.getCantidadMinParaAnadirDespensa()));
+        editTextCantidadMinMOD.setText(String.valueOf(producto.getCantidadMinParaAnadirDespensa())); // mostrar la cantidad mínima para añadir del producto seleccionado
         editTextTiendaProcedenteMOD = view.findViewById(R.id.editTextTiendaProcedenteMOD);
-        editTextTiendaProcedenteMOD.setText(producto.getTiendaProductoDespensa());
+        editTextTiendaProcedenteMOD.setText(producto.getTiendaProductoDespensa()); // mostrar la tienda procedente del producto seleccionado
         editTextCantidadMOD = view.findViewById(R.id.editTextCantidadMOD);
-        editTextCantidadMOD.setText(String.valueOf(producto.getCantidadProductoDespensa()));
+        editTextCantidadMOD.setText(String.valueOf(producto.getCantidadProductoDespensa())); // mostrar la cantidad del producto seleccionado
 
         // crear un arrayList para guardar todas las Categorias y mostrarlas en el Spinner
         List<String> spinnerArray = new ArrayList<String>();
@@ -199,7 +200,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerCategoriasMOD.setAdapter(spinnerArrayAdapter);
         spinnerCategoriasMOD.setOnItemSelectedListener(this);
-        // set the category of the product
+        // establecer la categoria del producto seleccionado
         int posCat = -1;
         for (int i = 0; i < spinnerArrayAdapter.getCount(); i++) {
             if (spinnerArrayAdapter.getItem(i).toString().equals(chosenCat)) {
@@ -208,9 +209,8 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             }
         }
         spinnerCategoriasMOD.setSelection(posCat);
-
         spinnerUnidadesMOD = view.findViewById(R.id.spinnerUnidadesMOD);
-        spinnerUnidadesMOD.setSelection(pos);
+        spinnerUnidadesMOD.setSelection(pos); // establecer la unidad del producto seleccionado
         imageButtonCantidadMinusMOD = view.findViewById(R.id.imageButtonCantidadMinusMOD);
         imageButtonCantidadMinusMOD.setOnClickListener(this);
         imageButtonCantidadPlusMOD = view.findViewById(R.id.imageButtonCantidadPlusMOD);
@@ -231,12 +231,12 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         switchAnadirAutoMOD = view.findViewById(R.id.switchAnadirAutoMOD);
 
 
-        // Set up BottomSheetBehavior callbacks
+        // callbacks para controlar el comportamiento del programa según las vistas del fragment de modificación
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    // When bottom sheet is fully expanded
+                    // cuando el fragment está completamente abierto
                     ((MainActivity) getActivity()).hideBottomNavigationView();
                     fullContent.setVisibility(View.VISIBLE);
                     partialContent.setVisibility(View.GONE);
@@ -246,7 +246,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.modificacion_producto_despensa_titulo);
                     }
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    // When bottom sheet is collapsed or hidden
+                    // cuando el fragment está abierto parcialmente
                     ((MainActivity) getActivity()).hideBottomNavigationView();
                     fullContent.setVisibility(View.GONE);
                     partialContent.setVisibility(View.VISIBLE);
@@ -256,6 +256,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_mi_despensa);
                     }
                 } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    // cuando el fragment está oculto - eliminar esta instancia del fragment
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     fm.popBackStack();
                     // establecer el título en la barra superior
@@ -267,14 +268,13 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             }
 
             @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
         });
-
 
         return view;
     }
 
+    // obtener la fecha de hoy
     private String getTodayDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -298,11 +298,13 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
     public void onDestroyView() {
         super.onDestroyView();
         fragmentCount--;
+        // cuando no queda ninguna instancia del fragment de modificación - mostrar de nuevo el menú de navigación
         if (fragmentCount == 0) {
             ((MainActivity) getActivity()).showBottomNavigationView();
         }
     }
 
+    // método para mostrar el calendario
     private void showCalendar(Button b) {
         Calendar cal = null;
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -310,6 +312,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month = month + 1;
                 String date = makeDateString(day, month, year);
+                // mostrar la fecha seleccionada en el botón
                 b.setText(date);
             }
         };
@@ -319,6 +322,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         datePickerDialog = new DatePickerDialog(getContext(), dateSetListener, year, month, day);
+        // actualizar la fecha del calendario según la fecha de caducidad del producto
         datePickerDialog.updateDate(producto.getFechaCaducidadProductoDespensa().getYear(), producto.getFechaCaducidadProductoDespensa().getMonthValue()-1, producto.getFechaCaducidadProductoDespensa().getDayOfMonth());
         datePickerDialog.show();
     }
@@ -327,6 +331,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
     public void onClick(View v) {
         // partialContent
         if (partialContent.getVisibility() == View.VISIBLE) {
+            // controlar el comportamiento de los botones de la cantidad
             if (v.getId() == imageButtonModCantidadMinus.getId()) {
                 int currentNumber = Integer.parseInt(editTextModCantidad.getText().toString());
                 if (currentNumber > 1) {
@@ -338,7 +343,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             } else if (v.getId() == btnModFechaCaducidad.getId()) {
                 showCalendar(btnModFechaCaducidad);
             } else if (v.getId() == btnModAceptar.getId()) {
-                // COMPROBAR LOS DATOS
+                // comprobar los datos; si todos están correctos - re-asignar los valores al producto
                 if (comprobarDatos(editTextModNombre)) {
                     producto.setNombreProductoDespensa(editTextModNombre.getText().toString());
                     producto.setCantidadProductoDespensa(Integer.parseInt(editTextModCantidad.getText().toString()));
@@ -346,7 +351,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     String[] dateFromButton = (btnModFechaCaducidad.getText().toString()).split("/");
                     LocalDate fechaCad = LocalDate.of(Integer.parseInt(dateFromButton[2]), Integer.parseInt(dateFromButton[1]), Integer.parseInt(dateFromButton[0]));
                     producto.setFechaCaducidadProductoDespensa(fechaCad);
-                    // MODIFICAR
+                    // método para realizar la modificación del producto en la BD, pasándo como parámetro el producto con valores actualizados
                     BDConexion.modificarProductoDespensa(producto, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
@@ -361,10 +366,11 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                         public void onResponse(Call call, Response response) throws IOException {
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 if (response.code() == 200) {
-                                    // alta realizada correctamente
+                                    // modificación realizada correctamente
                                     toast = Toast.makeText(getContext(), R.string.operacion_realizada, Toast.LENGTH_SHORT);
                                     makeToast();
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                                    // actualizar la vista de MiDespensaFragment
                                     callback.onOperacionCorrectaUpdated(true);
                                 } else {
                                     toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
@@ -379,9 +385,9 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     makeToast();
                 }
             } else if (v.getId() == btnModAnadirListaCompra.getId()) {
-                // to do
+                // to do: implementación del botón para añadir un producto a la lista de compra
             } else if (v.getId() == btnModEliminar.getId()) {
-                // COMPROBAR LOS DATOS
+                // comprobar los datos; si todos están correctos - mostrar el fragment de borrado
                 if (comprobarDatos(editTextModNombre)) {
                     borradoProducto = new BorradoProducto(producto, callback);
                     borradoProducto.setCancelable(false);
@@ -393,8 +399,11 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         // fullContent
         else if (fullContent.getVisibility() == View.VISIBLE) {
             if (v.getId() == productoPhotoMOD.getId()) {
+                // mostrar el menú para añadir la imagen
                 showInputImageDialog();
-            } else if (v.getId() == imageButtonCantidadMinusMOD.getId()) {
+            }
+            // controlar el comportamiento de los botones de cantidad
+            else if (v.getId() == imageButtonCantidadMinusMOD.getId()) {
                 int currentNumber = Integer.parseInt(editTextCantidadMOD.getText().toString());
                 if (currentNumber > 1) {
                     editTextCantidadMOD.setText(String.valueOf(currentNumber - 1));
@@ -403,6 +412,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 int currentNumber = Integer.parseInt(editTextCantidadMOD.getText().toString());
                 editTextCantidadMOD.setText(String.valueOf(currentNumber + 1));
             } else if (v.getId() == btnFechaCaducidadMOD.getId()) {
+                // mostrar el calendario y al seleccionar la fecha - mostrarla en el botón que se pasa como parámetro
                 showCalendar(btnFechaCaducidadMOD);
             } else if (v.getId() == imageButtonCantidadMinMinusMOD.getId()) {
                 int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
@@ -413,6 +423,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
                 editTextCantidadMinMOD.setText(String.valueOf(currentNumber + 1));
             } else if (v.getId() == btnAceptarMOD.getId()) {
+                // si la comprobación de los datos devuelve true, re-establecer los valores de los atributos del producto
                 if (comprobarDatos(editTextModNombreProductoMOD, spinnerCategoriasMOD)) {
                     int autoAnadirListaCompra = switchAnadirAutoMOD.isChecked() ? 1 : 0;
                     producto.setNombreProductoDespensa(editTextModNombreProductoMOD.getText().toString());
@@ -425,7 +436,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     producto.setAutoanadirAListaCompraDespensa(autoAnadirListaCompra);
                     producto.setCantidadMinParaAnadirDespensa(Integer.parseInt(editTextCantidadMinMOD.getText().toString()));
                     producto.setTiendaProductoDespensa(editTextTiendaProcedenteMOD.getText().toString());
-                    // MODIFICAR
+                    // método para realizar la modificación del producto en la BD, pasándo como parámetro el producto con valores actualizados
                     BDConexion.modificarProductoDespensa(producto, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
@@ -459,7 +470,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                     makeToast();
                 }
             } else if (v.getId() == btnAnadirListaCompraMOD.getId()) {
-                // to do
+                // to do: implementación del botón para añadir un producto a la lista de compra
             } else if (v.getId() == btnCancelarMOD.getId()) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
@@ -480,24 +491,27 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         return false;
     }
 
+    // método para mostrar el menú para añadir una imagen
     private void showInputImageDialog() {
         PopupMenu popupMenu = new PopupMenu(getContext(), productoPhotoMOD);
-        popupMenu.getMenu().add(Menu.NONE, 1, 1, "Cámara");
-        popupMenu.getMenu().add(Menu.NONE, 2, 2, "Galeria");
+        popupMenu.getMenu().add(Menu.NONE, 1, 1, "Cámara"); // hacer una foto
+        popupMenu.getMenu().add(Menu.NONE, 2, 2, "Galeria"); // seleccionar una imagén del móvil
         popupMenu.show();
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 1) {
+                    // comprobar los permisos de la cámara
                     if (checkCameraPermissions()) {
-                        pickImageCamera();
+                        pickImageCamera(); // método para hacer una foto
                     } else {
                         requestCameraPermissions();
                     }
                 } else if (item.getItemId() == 2) {
+                    // comprobar los permisos a los archivos del móvil
                     if (checkStoragePermission()) {
-                        pickImageGallery();
+                        pickImageGallery(); // método para seleccionar una imagen
                     } else {
                         requestStoragePermission();
                     }
@@ -507,6 +521,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         });
     }
 
+    // método para seleccionar una foto del móvil
     private void pickImageGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -518,12 +533,12 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    // receive the image, if picked
                     if (result.getResultCode() == Activity.RESULT_OK) {
-
-                        // image picked
-                        imageUri = result.getData().getData();
+                        // al seleccionar la foto del móvil
+                        imageUri = result.getData().getData(); // obtener su Uri
+                        // asignarle al producto
                         producto.setImagenProductoDespensa(String.valueOf(imageUri));
+                        // establecer la foto en la vista
                         if (imageUri.toString() != null && !imageUri.toString().equals("null") && !imageUri.toString().isBlank()) {
                             Glide.with(getContext())
                                     .load(imageUri)
@@ -538,11 +553,11 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             }
     );
 
+    // método para hacer una foto
     private void pickImageCamera() {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "Sample Title");
         values.put(MediaStore.Images.Media.DESCRIPTION, "Sample Description");
-
         imageUri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -554,10 +569,11 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    // receive the image, if taken
+                    // al hacer una foto, recibir la imagen
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // change the imageButton to the captured image
+                        // asignar la Uri de la foto al producto
                         producto.setImagenProductoDespensa(String.valueOf(imageUri));
+                        // establecer la foto en la vista
                         if (imageUri.toString() != null && !imageUri.toString().equals("null") && !imageUri.toString().isBlank()) {
                             Glide.with(getContext())
                                     .load(imageUri)
@@ -572,33 +588,36 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             }
     );
 
+    // comprobar los permisos a los archivos del móvil
     private boolean checkStoragePermission() {
         boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
 
+    // pedir los permisos a los archivos del móvil
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(getActivity(), storagePermissions, STORAGE_REQUEST_CODE);
     }
 
+    // comprobar los permisos a la cámara
     private boolean checkCameraPermissions() {
         boolean cameraResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
         boolean storageResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return cameraResult && storageResult;
     }
 
+    // pedir los permisos a la cámara
     private void requestCameraPermissions() {
         ActivityCompat.requestPermissions(getActivity(), cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {}
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
+    // método para personalizar un Toast
     private void makeToast() {
         View toastView = toast.getView();
         TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
