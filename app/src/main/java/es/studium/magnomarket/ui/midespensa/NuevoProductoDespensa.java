@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -18,7 +17,6 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -40,13 +38,11 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import es.studium.magnomarket.BDConexion;
 import es.studium.magnomarket.Categoria;
 import es.studium.magnomarket.MainActivity;
@@ -72,7 +68,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     EditText editTextTiendaProcedente;
     Button btnAceptar, btnAnadirListaCompra, btnCancelar;
     private Uri imageUri = null;
-
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 101;
     private String[] cameraPermissions;
@@ -80,9 +75,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     private DatePickerDialog datePickerDialog;
     Toast toast;
 
-    public NuevoProductoDespensa() {
-    }
-
+    public NuevoProductoDespensa() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +84,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+        // pasar al MiDespensa fragment al pulsar el botón de atrás
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -107,7 +101,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_nuevo_producto_despensa, container, false);
 
-        // ocultar la barra de navegación
+        // ocultar el menú de navegación
         ((MainActivity) getActivity()).hideBottomNavigationView();
 
         nuevoProductoPhoto = view.findViewById(R.id.nuevoProductoPhoto);
@@ -127,7 +121,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerCategorias.setAdapter(spinnerArrayAdapter);
         spinnerCategorias.setOnItemSelectedListener(this);
-
         imageButtonCantidadMinus = view.findViewById(R.id.imageButtonCantidadMinus);
         imageButtonCantidadMinus.setOnClickListener(this);
         imageButtonCantidadPlus = view.findViewById(R.id.imageButtonCantidadPlus);
@@ -156,17 +149,17 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             // establecer el título de la barra superior
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.alta_producto_despensa_titulo);
         }
-
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Show Bottom Navigation View again when leaving this fragment
+        // mostrar de nuevo el menú de navigación
         ((MainActivity) getActivity()).showBottomNavigationView();
     }
 
+    // obtener la fecha de hoy
     private String getTodayDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -179,8 +172,11 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == nuevoProductoPhoto.getId()) {
+            // mostrar el menú para añadir la imagen
             showInputImageDialog();
-        } else if (v.getId() == imageButtonCantidadMinus.getId()) {
+        }
+        // controlar el comportamiento de los botones de cantidad
+        else if (v.getId() == imageButtonCantidadMinus.getId()) {
             int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
             if (currentNumber > 1) {
                 editTextCantidad.setText(String.valueOf(currentNumber - 1));
@@ -188,7 +184,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         } else if (v.getId() == imageButtonCantidadPlus.getId()) {
             int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
             editTextCantidad.setText(String.valueOf(currentNumber + 1));
-        } else if (v.getId() == btnFechaCaducidad.getId()) {
+        }
+        // mostrar el calendario y al seleccionar la fecha
+        else if (v.getId() == btnFechaCaducidad.getId()) {
             Calendar cal = null;
             DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -219,7 +217,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                 int autoAnadirListaCompra = switchAnadirAuto.isChecked() ? 1 : 0;
                 String[] dateFromButton = (btnFechaCaducidad.getText().toString()).split("/");
                 LocalDate fechaCad = LocalDate.of(Integer.parseInt(dateFromButton[2]), Integer.parseInt(dateFromButton[1]), Integer.parseInt(dateFromButton[0]));
-                // crear un ProductoDespensa instance
+                // crear una instancia de ProductoDespensa
                 ProductoDespensa pd = new ProductoDespensa(
                         editTextNombreProducto.getText().toString(),
                         String.valueOf(imageUri),
@@ -231,7 +229,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                         editTextTiendaProcedente.getText().toString(),
                         spinnerCategorias.getSelectedItemPosition(),
                         MainActivity.idUsuario);
-                // dar de alta
+                // método para realizar el alta del producto en la BD, pasándo como parámetro el producto
                 BDConexion.anadirProductoDespensa(pd, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -260,7 +258,6 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
                 // falta datos a rellenar
                 toast = Toast.makeText(getContext(), R.string.toast_falta_nombre_categoria_producto, Toast.LENGTH_SHORT);
                 makeToast();            }
-
         } else if (v.getId() == btnAnadirListaCompra.getId()) {
             // to do
         } else if (v.getId() == btnCancelar.getId()) {
@@ -280,27 +277,27 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         return day + "/" + month + "/" + year;
     }
 
-
+    // método para mostrar el menú para añadir una imagen
     private void showInputImageDialog() {
         PopupMenu popupMenu = new PopupMenu(getContext(), nuevoProductoPhoto);
-
-        popupMenu.getMenu().add(Menu.NONE, 1, 1, "Cámara");
-        popupMenu.getMenu().add(Menu.NONE, 2, 2, "Galeria");
-
+        popupMenu.getMenu().add(Menu.NONE, 1, 1, "Cámara"); // hacer una foto
+        popupMenu.getMenu().add(Menu.NONE, 2, 2, "Galeria"); // seleccionar una imagén del móvil
         popupMenu.show();
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 1) {
+                    // comprobar los permisos de la cámara
                     if (checkCameraPermissions()) {
-                        pickImageCamera();
+                        pickImageCamera(); // método para hacer una foto
                     } else {
                         requestCameraPermissions();
                     }
                 } else if (item.getItemId() == 2) {
+                    // comprobar los permisos a los archivos del móvil
                     if (checkStoragePermission()) {
-                        pickImageGallery();
+                        pickImageGallery(); // método para seleccionar una imagen
                     } else {
                         requestStoragePermission();
                     }
@@ -310,6 +307,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         });
     }
 
+    // método para seleccionar una foto del móvil
     private void pickImageGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -321,11 +319,10 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    // receive the image, if picked
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // image picked
-                        imageUri = result.getData().getData();
-                        // change the imageButton to that image
+                        // al seleccionar la foto del móvil
+                        imageUri = result.getData().getData(); // obtener su Uri
+                        // asignarle al producto
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                             nuevoProductoPhoto.setImageBitmap(bitmap);
@@ -337,11 +334,11 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             }
     );
 
+    // método para hacer una foto
     private void pickImageCamera() {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "Sample Title");
         values.put(MediaStore.Images.Media.DESCRIPTION, "Sample Description");
-
         imageUri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -353,9 +350,9 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    // receive the image, if taken
+                    // al hacer una foto, recibir la imagen
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // change the imageButton to the captured image
+                        // asignar la Uri de la foto al producto
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                             nuevoProductoPhoto.setImageBitmap(bitmap);
@@ -367,33 +364,36 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             }
     );
 
+    // comprobar los permisos a los archivos del móvil
     private boolean checkStoragePermission() {
         boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
 
+    // pedir los permisos a los archivos del móvil
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(getActivity(), storagePermissions, STORAGE_REQUEST_CODE);
     }
 
+    // comprobar los permisos a la cámara
     private boolean checkCameraPermissions() {
         boolean cameraResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
         boolean storageResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return cameraResult && storageResult;
     }
 
+    // pedir los permisos a la cámara
     private void requestCameraPermissions() {
         ActivityCompat.requestPermissions(getActivity(), cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {}
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
+    // método para personalizar un Toast
     private void makeToast() {
         View toastView = toast.getView();
         TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);

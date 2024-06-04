@@ -25,12 +25,10 @@ import android.widget.Toast;
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 1001;
-
     // componentes de GUI
     EditText editTextUsuario, editTextClave;
     Button btnAcceder;
     SwitchCompat switchGuardarCredenciales;
-
     // shared preferences para guardar las preferencias
     public static final String LoginCredenciales = "MagnoLogin";
     // nombres de los claves en las preferencias compartidas
@@ -45,12 +43,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Comprobar si las credenciales están guardadas en sharedPreferences
         sharedpreferences = getSharedPreferences(LoginCredenciales, Context.MODE_PRIVATE);
         String isSharedUsuario = sharedpreferences.getString(Usuario, "");
         String isSharedClave = sharedpreferences.getString(Clave, "");
-
         // en el caso positivo, saltar el Login y mostrar directamente MainActivity
         if (!(isSharedUsuario.isEmpty()) && !(isSharedClave.isEmpty())) {
             Intent intent = new Intent(this, MainActivity.class);
@@ -87,7 +83,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             };
             editTextUsuario.addTextChangedListener(textWatcher);
             editTextClave.addTextChangedListener(textWatcher);
-
             // método para comprobar permisos
             checkPermissions();
         }
