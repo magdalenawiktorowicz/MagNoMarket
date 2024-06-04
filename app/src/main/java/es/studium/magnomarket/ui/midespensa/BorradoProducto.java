@@ -43,6 +43,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
         btnNo = dialogView.findViewById(R.id.btnNoBorradoProducto);
         btnNo.setOnClickListener(this);
         mensajeConfirmacion = dialogView.findViewById(R.id.textViewConfirmacionBorrado);
+        // establecer el texto en el mensaje de confirmación
         mensajeConfirmacion.setText((Html.fromHtml(mensajeConfirmacion.getText() + " <b>" + producto.getNombreProductoDespensa() + "</b>?")));
         return builder.create();
     }
@@ -52,6 +53,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
         if (v.getId() == btnNo.getId()) {
             dismiss();
         } else if (v.getId() == btnSi.getId()) {
+            // método para eliminar un producto de la BD
             BDConexion.borrarProductoDespensa(producto, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -70,6 +72,7 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
                             toast = Toast.makeText(getContext(), R.string.operacion_realizada, Toast.LENGTH_SHORT);
                             makeToast();
                             dismiss();
+                            // actualizar la vista de MiDespensaFragment
                             callback.onOperacionCorrectaUpdated(true);
                         } else {
                             toast = Toast.makeText(getContext(), R.string.operacion_no_realizada, Toast.LENGTH_SHORT);
@@ -80,9 +83,9 @@ public class BorradoProducto extends DialogFragment implements View.OnClickListe
                 }
             });
         }
-
     }
 
+    // método para personalizar un Toast
     private void makeToast() {
         View toastView = toast.getView();
         TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);

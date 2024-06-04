@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import es.studium.magnomarket.ProductoDespensa;
 import es.studium.magnomarket.R;
 
+// adaptador para cada elemento en ListView de ProductoDespensa
 public class AdapterListItem extends BaseAdapter {
     private Context contexto;
     private int distribucion;
@@ -45,48 +45,51 @@ public class AdapterListItem extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         View v = view;
 
-        // Inflate the view if it hasn't been already
         if (v == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(this.contexto);
             v = layoutInflater.inflate(this.distribucion, null);
         }
 
+        // obtener un elemento
         ProductoDespensa currentItem = items.get(position);
 
+        // asignarle el nombre del producto
         TextView textView = v.findViewById(R.id.textView);
         textView.setText(currentItem.getNombreProductoDespensa());
 
+        // asignarle una imagen
         ImageView productPhoto = v.findViewById(R.id.imageView);
         String imageUrl = currentItem.getImagenProductoDespensa();
 
         if (imageUrl != null && !imageUrl.equals("null") && !imageUrl.isBlank()) {
             Glide.with(contexto)
                     .load(Uri.parse(imageUrl))
-                    .placeholder(R.drawable.no_photo)
-                    .error(R.drawable.no_photo)
+                    .placeholder(R.drawable.no_photo) // en caso de que no hay acceso a la imagen seleccionada
+                    .error(R.drawable.no_photo) // en caso de error
                     .into(productPhoto);
         } else {
             productPhoto.setImageResource(R.drawable.no_photo);
         }
 
-
-
+        // asignarle un símbolo informativo de la caducidad
         ImageView simbolo = v.findViewById(R.id.imageView3);
 
         LocalDate now = LocalDate.now();
-        // expired
+        // rojo - cuando un producto está caducado
         if (currentItem.getFechaCaducidadProductoDespensa().isBefore(now)) {
             v.setBackgroundColor(contexto.getResources().getColor(R.color.expired));
             simbolo.setImageResource(R.drawable.expired);
-        } else if (currentItem.getFechaCaducidadProductoDespensa().isEqual(now) || (currentItem.getFechaCaducidadProductoDespensa().isAfter(now) && currentItem.getFechaCaducidadProductoDespensa().isBefore(now.plusDays(3))) || currentItem.getFechaCaducidadProductoDespensa().isEqual(now.plusDays(3))) {
+        }
+        // amarillo - cuando un producto está a punto de caducarse
+        else if (currentItem.getFechaCaducidadProductoDespensa().isEqual(now) || (currentItem.getFechaCaducidadProductoDespensa().isAfter(now) && currentItem.getFechaCaducidadProductoDespensa().isBefore(now.plusDays(3))) || currentItem.getFechaCaducidadProductoDespensa().isEqual(now.plusDays(3))) {
             v.setBackgroundColor(contexto.getResources().getColor(R.color.about_to_expire));
             simbolo.setImageResource(R.drawable.about_to_expire);
-        } else if (currentItem.getFechaCaducidadProductoDespensa().isAfter(now.plusDays(3))) {
+        }
+        // verde - cuando un producto está fresco
+        else if (currentItem.getFechaCaducidadProductoDespensa().isAfter(now.plusDays(3))) {
             v.setBackgroundColor(contexto.getResources().getColor(R.color.good));
             simbolo.setImageResource(R.drawable.good);
         }
-
-
 
         return v;
     }
