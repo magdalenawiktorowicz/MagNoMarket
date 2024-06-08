@@ -12,6 +12,8 @@ import okhttp3.*;
 
 public class BDConexion {
 
+    public static String BASE_URL = "http://192.168.1.131/ApiRestMagno/";
+
     public interface LoginCallback {
         void onLoginResult(boolean success, int idUsuario);
     }
@@ -25,7 +27,7 @@ public class BDConexion {
                 .add("password", contrasena)
                 .build();
         Request request = new Request.Builder()
-                .url("http://192.168.1.131/APIRestMagno/usuarios.php")
+                .url(BASE_URL + "usuarios.php")
                 .post(requestBody)
                 .build();
         Call call = client.newCall(request);
@@ -70,7 +72,7 @@ public class BDConexion {
         ArrayList<ProductoDespensa> productosDespensa = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://192.168.1.131/ApiRestMagno/productosdespensa.php?idUsuarioFK=" + idUsuario)
+                .url(BASE_URL + "productosdespensa.php?idUsuarioFK=" + idUsuario)
                 .build();
         // Crear una llamada asíncrona
         client.newCall(request).enqueue(new Callback() {
@@ -177,8 +179,8 @@ public class BDConexion {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                int resultado = response.code();
                 Log.i("MainActivity", String.valueOf(response));
+                callback.onResponse(call, response);
             }
         });
     }

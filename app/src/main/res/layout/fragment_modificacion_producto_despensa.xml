@@ -287,7 +287,7 @@
 
             <Spinner
                 android:id="@+id/spinnerCategoriasMOD"
-                android:layout_width="190dp"
+                android:layout_width="195dp"
                 android:layout_height="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
