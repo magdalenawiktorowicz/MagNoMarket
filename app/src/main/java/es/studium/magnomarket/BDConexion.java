@@ -12,7 +12,7 @@ import okhttp3.*;
 
 public class BDConexion {
 
-    public static String BASE_URL = "http://192.168.1.131/ApiRestMagno/";
+    public static String BASE_URL = "http://10.0.2.2/ApiRestMagno/";
 
     public interface LoginCallback {
         void onLoginResult(boolean success, int idUsuario);
@@ -121,7 +121,7 @@ public class BDConexion {
         ArrayList<Categoria> categorias = new ArrayList<>();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://192.168.1.131/ApiRestMagno/categorias.php")
+                .url(BASE_URL + "categorias.php")
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -166,7 +166,7 @@ public class BDConexion {
                 .add("idUsuarioFK", String.valueOf(productoDespensa.getIdUsuarioFK()))
                 .build();
         Request request = new Request.Builder()
-                .url("http://192.168.1.131/ApiRestMagno/productosdespensa.php")
+                .url(BASE_URL + "productosdespensa.php")
                 .post(formBody)
                 .build();
         Call call = client.newCall(request);
@@ -188,7 +188,7 @@ public class BDConexion {
     // ProductoDespensa - modificación
     public static void modificarProductoDespensa(ProductoDespensa producto, Callback callback) {
         OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder queryUrlBuilder = HttpUrl.parse("http://192.168.1.131/ApiRestMagno/productosdespensa.php").newBuilder();
+        HttpUrl.Builder queryUrlBuilder = HttpUrl.parse(BASE_URL + "productosdespensa.php").newBuilder();
         queryUrlBuilder.addQueryParameter("idProductoDespensa", String.valueOf(producto.getIdProductoDespensa()));
         queryUrlBuilder.addQueryParameter("nombreProductoDespensa", producto.getNombreProductoDespensa().toString());
         queryUrlBuilder.addQueryParameter("imagenProductoDespensa", producto.getImagenProductoDespensa().toString());
@@ -213,7 +213,7 @@ public class BDConexion {
     public static void borrarProductoDespensa(ProductoDespensa producto, Callback callback) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://192.168.1.131/ApiRestMagno/productosdespensa.php?idProductoDespensa=" + producto.getIdProductoDespensa())
+                .url(BASE_URL + "productosdespensa.php?idProductoDespensa=" + producto.getIdProductoDespensa())
                 .delete()
                 .build();
         client.newCall(request).enqueue(callback);
