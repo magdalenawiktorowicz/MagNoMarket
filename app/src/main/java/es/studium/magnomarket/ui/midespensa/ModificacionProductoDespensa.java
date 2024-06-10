@@ -333,18 +333,22 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         if (partialContent.getVisibility() == View.VISIBLE) {
             // controlar el comportamiento de los botones de la cantidad
             if (v.getId() == imageButtonModCantidadMinus.getId()) {
-                int currentNumber = Integer.parseInt(editTextModCantidad.getText().toString());
-                if (currentNumber > 1) {
-                    editTextModCantidad.setText(String.valueOf(currentNumber - 1));
+                if (!editTextModCantidad.getText().toString().isBlank()) {
+                    int currentNumber = Integer.parseInt(editTextModCantidad.getText().toString());
+                    if (currentNumber > 1) {
+                        editTextModCantidad.setText(String.valueOf(currentNumber - 1));
+                    }
                 }
             } else if (v.getId() == imageButtonModCantidadPlus.getId()) {
-                int currentNumber = Integer.parseInt(editTextModCantidad.getText().toString());
-                editTextModCantidad.setText(String.valueOf(currentNumber + 1));
+                if (!editTextModCantidad.getText().toString().isBlank()) {
+                    int currentNumber = Integer.parseInt(editTextModCantidad.getText().toString());
+                    editTextModCantidad.setText(String.valueOf(currentNumber + 1));
+                }
             } else if (v.getId() == btnModFechaCaducidad.getId()) {
                 showCalendar(btnModFechaCaducidad);
             } else if (v.getId() == btnModAceptar.getId()) {
                 // comprobar los datos; si todos están correctos - re-asignar los valores al producto
-                if (comprobarDatos(editTextModNombre)) {
+                if (comprobarDatos(editTextModNombre, editTextModCantidad)) {
                     producto.setNombreProductoDespensa(editTextModNombre.getText().toString());
                     producto.setCantidadProductoDespensa(Integer.parseInt(editTextModCantidad.getText().toString()));
                     producto.setUnidadProductoDespensa(spinnerModUnidades.getSelectedItem().toString());
@@ -388,7 +392,7 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
                 // to do: implementación del botón para añadir un producto a la lista de compra
             } else if (v.getId() == btnModEliminar.getId()) {
                 // comprobar los datos; si todos están correctos - mostrar el fragment de borrado
-                if (comprobarDatos(editTextModNombre)) {
+                if (comprobarDatos(editTextModNombre, editTextModCantidad)) {
                     borradoProducto = new BorradoProducto(producto, callback);
                     borradoProducto.setCancelable(false);
                     borradoProducto.show(getActivity().getSupportFragmentManager(), "Borrado Producto");
@@ -404,27 +408,35 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
             }
             // controlar el comportamiento de los botones de cantidad
             else if (v.getId() == imageButtonCantidadMinusMOD.getId()) {
-                int currentNumber = Integer.parseInt(editTextCantidadMOD.getText().toString());
-                if (currentNumber > 1) {
-                    editTextCantidadMOD.setText(String.valueOf(currentNumber - 1));
+                if (!editTextCantidadMOD.getText().toString().isBlank()) {
+                    int currentNumber = Integer.parseInt(editTextCantidadMOD.getText().toString());
+                    if (currentNumber > 1) {
+                        editTextCantidadMOD.setText(String.valueOf(currentNumber - 1));
+                    }
                 }
             } else if (v.getId() == imageButtonCantidadPlusMOD.getId()) {
-                int currentNumber = Integer.parseInt(editTextCantidadMOD.getText().toString());
-                editTextCantidadMOD.setText(String.valueOf(currentNumber + 1));
+                if (!editTextCantidadMOD.getText().toString().isBlank()) {
+                    int currentNumber = Integer.parseInt(editTextCantidadMOD.getText().toString());
+                    editTextCantidadMOD.setText(String.valueOf(currentNumber + 1));
+                }
             } else if (v.getId() == btnFechaCaducidadMOD.getId()) {
                 // mostrar el calendario y al seleccionar la fecha - mostrarla en el botón que se pasa como parámetro
                 showCalendar(btnFechaCaducidadMOD);
             } else if (v.getId() == imageButtonCantidadMinMinusMOD.getId()) {
-                int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
-                if (currentNumber > 1) {
-                    editTextCantidadMinMOD.setText(String.valueOf(currentNumber - 1));
+                if (!editTextCantidadMinMOD.getText().toString().isBlank()) {
+                    int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
+                    if (currentNumber > 1) {
+                        editTextCantidadMinMOD.setText(String.valueOf(currentNumber - 1));
+                    }
                 }
             } else if (v.getId() == imageButtonCantidadMinPlusMOD.getId()) {
-                int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
-                editTextCantidadMinMOD.setText(String.valueOf(currentNumber + 1));
+                if (!editTextCantidadMinMOD.getText().toString().isBlank()) {
+                    int currentNumber = Integer.parseInt(editTextCantidadMinMOD.getText().toString());
+                    editTextCantidadMinMOD.setText(String.valueOf(currentNumber + 1));
+                }
             } else if (v.getId() == btnAceptarMOD.getId()) {
                 // si la comprobación de los datos devuelve true, re-establecer los valores de los atributos del producto
-                if (comprobarDatos(editTextModNombreProductoMOD, spinnerCategoriasMOD)) {
+                if (comprobarDatos(editTextModNombreProductoMOD, editTextCantidadMOD, editTextCantidadMinMOD, spinnerCategoriasMOD)) {
                     int autoAnadirListaCompra = switchAnadirAutoMOD.isChecked() ? 1 : 0;
                     producto.setNombreProductoDespensa(editTextModNombreProductoMOD.getText().toString());
                     producto.setIdCategoriaFK(spinnerCategoriasMOD.getSelectedItemPosition());
@@ -477,15 +489,15 @@ public class ModificacionProductoDespensa extends Fragment implements View.OnCli
         }
     }
 
-    private boolean comprobarDatos(EditText et, Spinner sp) {
-        if (!et.getText().toString().isBlank() && (sp.getSelectedItemPosition() != 0)) {
+    private boolean comprobarDatos(EditText et, EditText cantidad, EditText cantidadMin, Spinner sp) {
+        if (!et.getText().toString().isBlank() && (sp.getSelectedItemPosition() != 0) && (!cantidad.getText().toString().isBlank()) && (!cantidadMin.getText().toString().isBlank())) {
             return true;
         }
         return false;
     }
 
-    private boolean comprobarDatos(EditText et) {
-        if (!et.getText().toString().isBlank()) {
+    private boolean comprobarDatos(EditText et, EditText cantidad) {
+        if (!(et.getText().toString().isBlank()) && !(cantidad.getText().toString().isBlank())) {
             return true;
         }
         return false;

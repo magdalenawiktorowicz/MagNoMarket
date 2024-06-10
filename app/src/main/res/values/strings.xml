@@ -48,6 +48,6 @@
     <string name="internet_permission_denied" tools:ignore="ExtraTranslation">Acceso a internet no permitido</string>
     <string name="operacion_no_realizada" tools:ignore="ExtraTranslation">Error: la operación no se ha realizado.</string>
     <string name="operacion_realizada" tools:ignore="ExtraTranslation">La operación se ha realizado correctamente.</string>
-    <string name="toast_falta_nombre_producto" tools:ignore="ExtraTranslation">Introduce el nombre del producto.</string>
-    <string name="toast_falta_nombre_categoria_producto" tools:ignore="ExtraTranslation">Introduce el nombre del producto y selecciona la categoría.</string>
+    <string name="toast_falta_nombre_producto" tools:ignore="ExtraTranslation">Introduce el nombre y la cantidad del producto.</string>
+    <string name="toast_falta_nombre_categoria_producto" tools:ignore="ExtraTranslation">Introduce el nombre, la cantidad y la cantidad mínima del producto y selecciona la categoría.</string>
 </resources>

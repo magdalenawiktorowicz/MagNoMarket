@@ -177,13 +177,17 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
         }
         // controlar el comportamiento de los botones de cantidad
         else if (v.getId() == imageButtonCantidadMinus.getId()) {
-            int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
-            if (currentNumber > 1) {
-                editTextCantidad.setText(String.valueOf(currentNumber - 1));
+            if (!editTextCantidad.getText().toString().isBlank()) {
+                int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
+                if (currentNumber > 1) {
+                    editTextCantidad.setText(String.valueOf(currentNumber - 1));
+                }
             }
         } else if (v.getId() == imageButtonCantidadPlus.getId()) {
-            int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
-            editTextCantidad.setText(String.valueOf(currentNumber + 1));
+            if (!editTextCantidad.getText().toString().isBlank()) {
+                int currentNumber = Integer.parseInt(editTextCantidad.getText().toString());
+                editTextCantidad.setText(String.valueOf(currentNumber + 1));
+            }
         }
         // mostrar el calendario y al seleccionar la fecha
         else if (v.getId() == btnFechaCaducidad.getId()) {
@@ -204,13 +208,17 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
             datePickerDialog = new DatePickerDialog(getContext(), dateSetListener, year, month, day);
             datePickerDialog.show();
         } else if (v.getId() == imageButtonCantidadMinMinus.getId()) {
-            int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
-            if (currentNumber > 1) {
-                editTextCantidadMin.setText(String.valueOf(currentNumber - 1));
+            if (!editTextCantidadMin.getText().toString().isBlank()) {
+                int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
+                if (currentNumber > 1) {
+                    editTextCantidadMin.setText(String.valueOf(currentNumber - 1));
+                }
             }
         } else if (v.getId() == imageButtonCantidadMinPlus.getId()) {
-            int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
-            editTextCantidadMin.setText(String.valueOf(currentNumber + 1));
+            if (!editTextCantidadMin.getText().toString().isBlank()) {
+                int currentNumber = Integer.parseInt(editTextCantidadMin.getText().toString());
+                editTextCantidadMin.setText(String.valueOf(currentNumber + 1));
+            }
         } else if (v.getId() == btnAceptar.getId()) {
             // comprobar los datos
             if (comprobarDatos()) {
@@ -267,7 +275,7 @@ public class NuevoProductoDespensa extends Fragment implements View.OnClickListe
     }
 
     private boolean comprobarDatos() {
-        if (!editTextNombreProducto.getText().toString().isBlank() && (spinnerCategorias.getSelectedItemPosition() != 0)) {
+        if (!editTextNombreProducto.getText().toString().isBlank() && (spinnerCategorias.getSelectedItemPosition() != 0) && !(editTextCantidad.getText().toString().isBlank()) && !(editTextCantidadMin.getText().toString().isBlank())) {
             return true;
         }
         return false;
